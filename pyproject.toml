@@ -77,7 +77,7 @@ dependencies = [
     "croniter>=3.0.3",       # for: archivebox schedule (TODO: remove this in favor of our own custom archivebox scheduler)
     
     ### Base Types
-    "pydantic>=2.8.0",       # for: archivebox.api (django-ninja), Binary & BinProvider (abx-pkg), archivebox.config (pydantic-settings), and archivebox.index.schema (pydantic)
+    "pydantic (==2.10.0)",       # for: archivebox.api (django-ninja), Binary & BinProvider (abx-pkg), archivebox.config (pydantic-settings), and archivebox.index.schema (pydantic)
     "pydantic-settings>=2.5.2", # for: archivebox.config
     "python-benedict[io,parse]>=0.33.2", # for: dict replacement all over the codebase to allow .attr-style access
     "ulid-py>=1.1.0",        # TODO: remove this in favor of pure ABID / UUID4
