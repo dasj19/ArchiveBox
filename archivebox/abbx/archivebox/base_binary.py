@@ -14,8 +14,21 @@ from pydantic_pkgr import (
     EnvProvider,
 )
 
+from pydantic import BaseModel, Field 
+
 from archivebox.config.permissions import ARCHIVEBOX_USER
 
+class BinProviderOverrides(BaseModel):
+    # Define any additional fields or methods here
+    some_field: str = Field(default="default_value")
+
+class BrewProviderOverrides(BaseModel):
+    # Define any additional fields or methods here
+    some_field: str = Field(default="default_value")
+
+class EnvProviderOverrides(BaseModel):
+    # Define any additional fields or methods here
+    some_field: str = Field(default="default_value")
 
 class BaseBinProvider(BinProvider):
     
@@ -100,6 +113,11 @@ class EnvBinProvider(EnvProvider, BaseBinProvider):
     name: BinProviderName = "env"
     
     euid: Optional[int] = ARCHIVEBOX_USER
+
+# Call model_rebuild to finalize the model
+AptBinProvider.model_rebuild()
+BrewBinProvider.model_rebuild()
+EnvBinProvider.model_rebuild()
 
 apt = AptBinProvider()
 brew = BrewBinProvider()

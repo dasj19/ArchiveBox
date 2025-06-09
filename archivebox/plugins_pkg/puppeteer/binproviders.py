@@ -5,7 +5,7 @@ import platform
 from pathlib import Path
 from typing import List, Optional, Dict, ClassVar
 
-from pydantic import Field
+from pydantic import Field, BaseModel
 from pydantic_pkgr import (
     BinName,
     BinProviderName,
@@ -22,6 +22,8 @@ from abbx.archivebox.base_binary import BaseBinProvider
 
 from plugins_pkg.npm.binproviders import SYS_NPM_BINPROVIDER
 
+class BinProviderOverrides(BaseModel):
+    some_field: str = Field(default="default_value")
 
 class PuppeteerBinProvider(BaseBinProvider):
     name: BinProviderName = "puppeteer"

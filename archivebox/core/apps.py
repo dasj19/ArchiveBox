@@ -2,7 +2,7 @@ __package__ = 'archivebox.core'
 
 from django.apps import AppConfig
 
-import abbx
+import abx
 
 
 class CoreConfig(AppConfig):
@@ -13,12 +13,12 @@ class CoreConfig(AppConfig):
         from core.admin_site import register_admin_site
         register_admin_site()
         
-        abbx.pm.hook.ready()
+        abx.pm.hook.ready()
 
 
 
 
-@abbx.hookimpl
+@abx.hookimpl
 def register_admin(admin_site):
     """Register the core.models views (Snapshot, ArchiveResult, Tag, etc.) with the admin site"""
     from core.admin import register_admin

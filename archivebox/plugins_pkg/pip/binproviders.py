@@ -6,11 +6,17 @@ import site
 from pathlib import Path
 from typing import Optional
 
+from pydantic import Field, BaseModel
+
 from pydantic_pkgr import PipProvider, BinName, BinProviderName
 
 from archivebox.config import CONSTANTS
 
 from abbx.archivebox.base_binary import BaseBinProvider
+
+
+class BinProviderOverrides(BaseModel):
+    some_field: str = Field(default="default_value")
 
 
 ###################### Config ##########################

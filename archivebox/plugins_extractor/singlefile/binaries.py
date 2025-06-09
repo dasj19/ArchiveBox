@@ -3,7 +3,7 @@ __package__ = 'plugins_extractor.singlefile'
 from typing import List
 
 from pydantic import InstanceOf
-from pydantic_pkgr import BinProvider, BinaryOverrides, BinName, bin_abspath
+from pydantic_pkgr import BinProvider, BinName, bin_abspath
 
 from abbx.archivebox.base_binary import BaseBinary, env
 
@@ -11,38 +11,48 @@ from plugins_pkg.npm.binproviders import SYS_NPM_BINPROVIDER, LIB_NPM_BINPROVIDE
 
 from .config import SINGLEFILE_CONFIG
 
+from pydantic import BaseModel, Field
+from typing import Dict, Any
 
 SINGLEFILE_MIN_VERSION = '1.1.54'
 SINGLEFILE_MAX_VERSION = '1.1.60'
 
 
+class BinaryOverrides(BaseModel):
+    overrides: Dict[str, Dict[str, Any]] = Field(default_factory=dict)
+
 class SinglefileBinary(BaseBinary):
     name: BinName = SINGLEFILE_CONFIG.SINGLEFILE_BINARY
     binproviders_supported: List[InstanceOf[BinProvider]] = [LIB_NPM_BINPROVIDER, SYS_NPM_BINPROVIDER, env]
+    overrides: BinaryOverrides = BinaryOverrides()
 
-    overrides: BinaryOverrides = {
-        LIB_NPM_BINPROVIDER.name: {
-            "abspath": lambda:
-                bin_abspath(SINGLEFILE_CONFIG.SINGLEFILE_BINARY, PATH=LIB_NPM_BINPROVIDER.PATH)
-                or bin_abspath("single-file", PATH=LIB_NPM_BINPROVIDER.PATH)
-                or bin_abspath("single-file-node.js", PATH=LIB_NPM_BINPROVIDER.PATH),
-            "packages": [f"single-file-cli@>={SINGLEFILE_MIN_VERSION} <{SINGLEFILE_MAX_VERSION}"],
-        },
-        SYS_NPM_BINPROVIDER.name: {
-            "abspath": lambda:
-                bin_abspath(SINGLEFILE_CONFIG.SINGLEFILE_BINARY, PATH=SYS_NPM_BINPROVIDER.PATH)
-                or bin_abspath("single-file", PATH=SYS_NPM_BINPROVIDER.PATH)
-                or bin_abspath("single-file-node.js", PATH=SYS_NPM_BINPROVIDER.PATH),
-            "packages": [f"single-file-cli@>={SINGLEFILE_MIN_VERSION} <{SINGLEFILE_MAX_VERSION}"],
-            "install": lambda: None,
-        },
-        env.name: {
-            'abspath': lambda:
-                bin_abspath(SINGLEFILE_CONFIG.SINGLEFILE_BINARY, PATH=env.PATH)
-                or bin_abspath('single-file', PATH=env.PATH)
-                or bin_abspath('single-file-node.js', PATH=env.PATH),
-        },
-    }
-
+    # overrides: BinaryOverrides = BinaryOverrides(
+    #     overrides={
+    #         LIB_NPM_BINPROVIDER.name: {
+    #             "abspath": lambda: (
+    #                 bin_abspath(SINGLEFILE_CONFIG.SINGLEFILE_BINARY, PATH=LIB_NPM_BINPROVIDER.PATH)
+    #                 or bin_abspath("single-file", PATH=LIB_NPM_BINPROVIDER.PATH)
+    #                 or bin_abspath("single-file-node.js", PATH=LIB_NPM_BINPROVIDER.PATH)
+    #             ),
+    #             "packages": [f"single-file-cli@>={SINGLEFILE_MIN_VERSION} <{SINGLEFILE_MAX_VERSION}"],
+    #         },
+    #         SYS_NPM_BINPROVIDER.name: {
+    #             "abspath": lambda: (
+    #                 bin_abspath(SINGLEFILE_CONFIG.SINGLEFILE_BINARY, PATH=SYS_NPM_BINPROVIDER.PATH)
+    #                 or bin_abspath("single-file", PATH=SYS_NPM_BINPROVIDER.PATH)
+    #                 or bin_abspath("single-file-node.js", PATH=SYS_NPM_BINPROVIDER.PATH)
+    #             ),
+    #             "packages": [f"single-file-cli@>={SINGLEFILE_MIN_VERSION} <{SINGLEFILE_MAX_VERSION}"],
+    #             "install": lambda: None,
+    #         },
+    #         env.name: {
+    #             'abspath': lambda: (
+    #                 bin_abspath(SINGLEFILE_CONFIG.SINGLEFILE_BINARY, PATH=env.PATH)
+    #                 or bin_abspath('single-file', PATH=env.PATH)
+    #                 or bin_abspath('single-file-node.js', PATH=env.PATH)
+    #             ),
+    #         },
+    #     }
+    # )
 
 SINGLEFILE_BINARY = SinglefileBinary()
