@@ -8,7 +8,7 @@ from pydantic import InstanceOf
 from pydantic_pkgr import BinProvider, BinName, BinaryOverrides
 
 
-from abx.archivebox.base_binary import BaseBinary, env, apt, brew
+from abbx.archivebox.base_binary import BaseBinary, env, apt, brew
 
 
 class NodeBinary(BaseBinary):

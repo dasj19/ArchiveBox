@@ -2,7 +2,7 @@ __package__ = 'plugins_extractor.git'
 
 from pathlib import Path
 
-from abx.archivebox.base_extractor import BaseExtractor, ExtractorName
+from abbx.archivebox.base_extractor import BaseExtractor, ExtractorName
 
 from .binaries import GIT_BINARY
 

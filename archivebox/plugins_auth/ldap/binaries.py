@@ -10,7 +10,7 @@ from pydantic import InstanceOf
 from pydantic_pkgr import BinaryOverrides, SemVer
 
 
-from abx.archivebox.base_binary import BaseBinary, BaseBinProvider, apt
+from abbx.archivebox.base_binary import BaseBinary, BaseBinProvider, apt
 
 from plugins_pkg.pip.binproviders import SYS_PIP_BINPROVIDER, VENV_PIP_BINPROVIDER, LIB_PIP_BINPROVIDER, VENV_SITE_PACKAGES, LIB_SITE_PACKAGES, USER_SITE_PACKAGES, SYS_SITE_PACKAGES
 

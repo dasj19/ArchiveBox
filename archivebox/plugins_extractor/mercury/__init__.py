@@ -5,10 +5,10 @@ __author__ = 'ArchiveBox'
 __homepage__ = 'https://github.com/postlight/mercury-parser'
 __dependencies__ = ['npm']
 
-import abx
+import abbx
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_PLUGIN():
     return {
         'mercury': {
@@ -21,7 +21,7 @@ def get_PLUGIN():
         }
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_CONFIG():
     from .config import MERCURY_CONFIG
     
@@ -29,7 +29,7 @@ def get_CONFIG():
         'mercury': MERCURY_CONFIG
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_BINARIES():
     from .binaries import MERCURY_BINARY
     
@@ -37,7 +37,7 @@ def get_BINARIES():
         'mercury': MERCURY_BINARY,
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_EXTRACTORS():
     from .extractors import MERCURY_EXTRACTOR
     

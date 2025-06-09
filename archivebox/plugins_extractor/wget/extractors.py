@@ -4,7 +4,7 @@ from pathlib import Path
 
 from pydantic_pkgr import BinName
 
-from abx.archivebox.base_extractor import BaseExtractor, ExtractorName
+from abbx.archivebox.base_extractor import BaseExtractor, ExtractorName
 
 from .binaries import WGET_BINARY
 from .wget_util import wget_output_path

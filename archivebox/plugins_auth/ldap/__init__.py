@@ -6,10 +6,10 @@ __author__ = 'ArchiveBox'
 __homepage__ = 'https://github.com/django-auth-ldap/django-auth-ldap'
 __dependencies__ = ['pip']
 
-import abx
+import abbx
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_PLUGIN():
     return {
         __id__: {
@@ -25,7 +25,7 @@ def get_PLUGIN():
 
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_CONFIG():
     from .config import LDAP_CONFIG
     
@@ -33,7 +33,7 @@ def get_CONFIG():
         __id__: LDAP_CONFIG
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_BINARIES():
     from .binaries import LDAP_BINARY
     
@@ -60,7 +60,7 @@ def create_superuser_from_ldap_user(sender, user=None, ldap_user=None, **kwargs)
     print(f'[!] WARNING: Creating new user {user} based on LDAP user {ldap_user} (is_staff={user.is_staff}, is_superuser={user.is_superuser})')
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def ready():
     """
     Called at AppConfig.ready() time (settings + models are all loaded)

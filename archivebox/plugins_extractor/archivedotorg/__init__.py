@@ -5,10 +5,10 @@ __author__ = 'ArchiveBox'
 __homepage__ = 'https://archive.org'
 __dependencies__ = []
 
-import abx
+import abbx
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_PLUGIN():
     return {
         'archivedotorg': {
@@ -21,7 +21,7 @@ def get_PLUGIN():
         }
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_CONFIG():
     from .config import ARCHIVEDOTORG_CONFIG
     
@@ -30,7 +30,7 @@ def get_CONFIG():
     }
 
 
-# @abx.hookimpl
+# @abbx.hookimpl
 # def get_EXTRACTORS():
 #     from .extractors import ARCHIVEDOTORG_EXTRACTOR
 #

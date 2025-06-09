@@ -5,10 +5,10 @@ __author__ = 'ArchiveBox'
 __homepage__ = 'https://github.com/ArchiveBox/readability-extractor'
 __dependencies__ = ['npm']
 
-import abx
+import abbx
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_PLUGIN():
     return {
         'readability': {
@@ -21,7 +21,7 @@ def get_PLUGIN():
         }
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_CONFIG():
     from .config import READABILITY_CONFIG
     
@@ -29,7 +29,7 @@ def get_CONFIG():
         'readability': READABILITY_CONFIG
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_BINARIES():
     from .binaries import READABILITY_BINARY
     
@@ -37,7 +37,7 @@ def get_BINARIES():
         'readability': READABILITY_BINARY,
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_EXTRACTORS():
     from .extractors import READABILITY_EXTRACTOR
     

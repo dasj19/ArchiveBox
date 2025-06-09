@@ -1,6 +1,6 @@
-__package__ = 'abx.archivebox'
+__package__ = 'abbx.archivebox'
 
-import abx
+import abbx
 
 
 class BaseReplayer:
@@ -18,7 +18,7 @@ class BaseReplayer:
     # icon_view: LazyImportStr = 'plugins.generic_replayer.views.get_icon'
     # thumbnail_view: LazyImportStr = 'plugins.generic_replayer.views.get_icon'
 
-    @abx.hookimpl
+    @abbx.hookimpl
     def get_REPLAYERS(self):
         return [self]
 

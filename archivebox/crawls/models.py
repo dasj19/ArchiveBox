@@ -121,32 +121,32 @@ class Outlink(models.Model):
 
 
         
-# @abx.hookimpl.on_archiveresult_created
+# @abbx.hookimpl.on_archiveresult_created
 # def exec_archiveresult_extractor_effects(archiveresult):
 #     config = get_scope_config(...)
     
-#     # abx.archivebox.writes.update_archiveresult_started(archiveresult, start_ts=timezone.now())
-#     # abx.archivebox.events.on_archiveresult_updated(archiveresult)
+#     # abbx.archivebox.writes.update_archiveresult_started(archiveresult, start_ts=timezone.now())
+#     # abbx.archivebox.events.on_archiveresult_updated(archiveresult)
     
 #     # check if it should be skipped
-#     if not abx.archivebox.reads.get_archiveresult_should_run(archiveresult, config):
-#         abx.archivebox.writes.update_archiveresult_skipped(archiveresult, status='skipped')
-#         abx.archivebox.events.on_archiveresult_skipped(archiveresult, config)
+#     if not abbx.archivebox.reads.get_archiveresult_should_run(archiveresult, config):
+#         abbx.archivebox.writes.update_archiveresult_skipped(archiveresult, status='skipped')
+#         abbx.archivebox.events.on_archiveresult_skipped(archiveresult, config)
 #         return
     
 #     # run the extractor method and save the output back to the archiveresult
 #     try:
-#         output = abx.archivebox.effects.exec_archiveresult_extractor(archiveresult, config)
-#         abx.archivebox.writes.update_archiveresult_succeeded(archiveresult, output=output, error=None, end_ts=timezone.now())
+#         output = abbx.archivebox.effects.exec_archiveresult_extractor(archiveresult, config)
+#         abbx.archivebox.writes.update_archiveresult_succeeded(archiveresult, output=output, error=None, end_ts=timezone.now())
 #     except Exception as e:
-#         abx.archivebox.writes.update_archiveresult_failed(archiveresult, error=e, end_ts=timezone.now())
+#         abbx.archivebox.writes.update_archiveresult_failed(archiveresult, error=e, end_ts=timezone.now())
     
 #     # bump the modified time on the archiveresult and Snapshot
-#     abx.archivebox.events.on_archiveresult_updated(archiveresult)
-#     abx.archivebox.events.on_snapshot_updated(archiveresult.snapshot)
+#     abbx.archivebox.events.on_archiveresult_updated(archiveresult)
+#     abbx.archivebox.events.on_snapshot_updated(archiveresult.snapshot)
     
 
-# @abx.hookimpl.reads.get_outlink_parents
+# @abbx.hookimpl.reads.get_outlink_parents
 # def get_outlink_parents(url, crawl_pk=None, config=None):
 #     scope = Q(dst=url)
 #     if crawl_pk:

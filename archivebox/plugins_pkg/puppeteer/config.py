@@ -1,7 +1,7 @@
 __package__ = 'plugins_pkg.puppeteer'
 
 
-from abx.archivebox.base_configset import BaseConfigSet
+from abbx.archivebox.base_configset import BaseConfigSet
 
 
 ###################### Config ##########################

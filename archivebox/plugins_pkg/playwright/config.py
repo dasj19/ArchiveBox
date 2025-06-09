@@ -1,6 +1,6 @@
 __package__ = 'playwright'
 
-from abx.archivebox.base_configset import BaseConfigSet
+from abbx.archivebox.base_configset import BaseConfigSet
 
 
 class PlaywrightConfigs(BaseConfigSet):

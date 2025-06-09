@@ -5,7 +5,7 @@ import sys
 from typing import Dict, List, Optional
 from pydantic import Field, model_validator, computed_field
 
-from abx.archivebox.base_configset import BaseConfigSet
+from abbx.archivebox.base_configset import BaseConfigSet
 
 LDAP_LIB = None
 LDAP_SEARCH = None

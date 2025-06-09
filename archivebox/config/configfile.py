@@ -125,7 +125,7 @@ def section_for_key(key: str) -> Any:
 def write_config_file(config: Dict[str, str]) -> benedict:
     """load the ini-formatted config file from DATA_DIR/Archivebox.conf"""
 
-    import abx.archivebox.reads
+    import abbx.archivebox.reads
     from archivebox.misc.system import atomic_write
 
     CONFIG_HEADER = (
@@ -175,7 +175,7 @@ def write_config_file(config: Dict[str, str]) -> benedict:
     updated_config = {}
     try:
         # validate the updated_config by attempting to re-parse it
-        updated_config = {**load_all_config(), **abx.archivebox.reads.get_FLAT_CONFIG()}
+        updated_config = {**load_all_config(), **abbx.archivebox.reads.get_FLAT_CONFIG()}
     except BaseException:                                                       # lgtm [py/catch-base-exception]
         # something went horribly wrong, revert to the previous version
         with open(f'{config_path}.bak', 'r', encoding='utf-8') as old:
@@ -233,11 +233,11 @@ def load_config(defaults: Dict[str, Any],
     return benedict(extended_config)
 
 def load_all_config():
-    import abx.archivebox.reads
+    import abbx.archivebox.reads
     
     flat_config = benedict()
     
-    for config_section in abx.archivebox.reads.get_CONFIGS().values():
+    for config_section in abbx.archivebox.reads.get_CONFIGS().values():
         config_section.__init__()
         flat_config.update(config_section.model_dump())
         

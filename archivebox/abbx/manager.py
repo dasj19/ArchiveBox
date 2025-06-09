@@ -27,4 +27,4 @@ class PluginManager(pluggy.PluginManager):
         except AttributeError:
             return super().parse_hookimpl_opts(type(plugin), name)
 
-pm = PluginManager("abx")
+pm = PluginManager("abbx")

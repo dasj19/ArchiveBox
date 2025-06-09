@@ -5,7 +5,7 @@ from typing import List
 
 from pydantic import Field
 
-from abx.archivebox.base_configset import BaseConfigSet
+from abbx.archivebox.base_configset import BaseConfigSet
 
 from archivebox.config import CONSTANTS
 from archivebox.config.common import SEARCH_BACKEND_CONFIG

@@ -3,8 +3,8 @@ from pathlib import Path
 from pluggy import HookimplMarker
 from pluggy import HookspecMarker
 
-spec = hookspec = HookspecMarker("abx")
-impl = hookimpl = HookimplMarker("abx")
+spec = hookspec = HookspecMarker("abbx")
+impl = hookimpl = HookimplMarker("abbx")
 
 
 @hookspec

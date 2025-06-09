@@ -197,7 +197,7 @@ def version(quiet: bool=False,
     
     from django.conf import settings
     
-    from abx.archivebox.base_binary import BaseBinary, apt, brew, env
+    from abbx.archivebox.base_binary import BaseBinary, apt, brew, env
     
     from archivebox.config.version import get_COMMIT_HASH, get_BUILD_TIME
     from archivebox.config.permissions import ARCHIVEBOX_USER, ARCHIVEBOX_GROUP, RUNNING_AS_UID, RUNNING_AS_GID
@@ -1183,7 +1183,7 @@ def config(config_options_str: Optional[str]=None,
            out_dir: Path=DATA_DIR) -> None:
     """Get and set your ArchiveBox project configuration values"""
 
-    import abx.archivebox.reads
+    import abbx.archivebox.reads
 
     from rich import print
 
@@ -1265,7 +1265,7 @@ def config(config_options_str: Optional[str]=None,
         if new_config:
             before = settings.FLAT_CONFIG
             matching_config = write_config_file(new_config)
-            after = {**load_all_config(), **abx.archivebox.reads.get_FLAT_CONFIG()}
+            after = {**load_all_config(), **abbx.archivebox.reads.get_FLAT_CONFIG()}
             print(printable_config(matching_config))
 
             side_effect_changes = {}

@@ -13,7 +13,7 @@ from pydantic_pkgr import (
     bin_abspath,
 )
 
-from abx.archivebox.base_binary import BaseBinary, env, apt, brew
+from abbx.archivebox.base_binary import BaseBinary, env, apt, brew
 
 # Depends on Other Plugins:
 from archivebox.config.common import SHELL_CONFIG

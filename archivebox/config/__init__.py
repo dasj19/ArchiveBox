@@ -9,15 +9,15 @@ from .constants import CONSTANTS, CONSTANTS_CONFIG, PACKAGE_DIR, DATA_DIR, ARCHI
 from .version import VERSION                        # noqa
 
 
-import abx
+import abbx
 
 
-# @abx.hookimpl
+# @abbx.hookimpl
 # def get_INSTALLED_APPS():
 #     return ['config']
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_CONFIG():
     from .common import (
         SHELL_CONFIG,
@@ -36,7 +36,7 @@ def get_CONFIG():
         'SEARCHBACKEND_CONFIG': SEARCH_BACKEND_CONFIG,
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def ready():
     for config in get_CONFIG().values():
         config.validate()

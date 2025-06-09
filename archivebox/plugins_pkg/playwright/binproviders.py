@@ -20,7 +20,7 @@ from pydantic_pkgr import (
 
 from archivebox.config import CONSTANTS
 
-from abx.archivebox.base_binary import BaseBinProvider, env
+from abbx.archivebox.base_binary import BaseBinProvider, env
 
 from plugins_pkg.pip.binproviders import SYS_PIP_BINPROVIDER
 

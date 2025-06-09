@@ -6,10 +6,10 @@ __author__ = 'ArchiveBox'
 __homepage__ = 'https://github.com/ArchiveBox/ArchiveBox/tree/dev/archivebox/plugins_extractor/pocket'
 __dependencies__ = []
 
-import abx
+import abbx
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_PLUGIN():
     return {
         __id__: {
@@ -23,7 +23,7 @@ def get_PLUGIN():
         }
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_CONFIG():
     from .config import POCKET_CONFIG
     
@@ -31,7 +31,7 @@ def get_CONFIG():
         __id__: POCKET_CONFIG
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def ready():
     from .config import POCKET_CONFIG
     POCKET_CONFIG.validate()

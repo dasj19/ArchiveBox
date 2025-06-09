@@ -5,7 +5,7 @@ import subprocess
 
 from typing import List, Iterable
 
-from abx.archivebox.base_searchbackend import BaseSearchBackend
+from abbx.archivebox.base_searchbackend import BaseSearchBackend
 
 from .binaries import RIPGREP_BINARY
 from .config import RIPGREP_CONFIG

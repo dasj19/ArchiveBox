@@ -5,10 +5,10 @@ __author__ = 'ArchiveBox'
 __homepage__ = 'https://github.com/curl/curl'
 __dependencies__ = []
 
-import abx
+import abbx
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_PLUGIN():
     return {
         'curl': {
@@ -21,7 +21,7 @@ def get_PLUGIN():
         }
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_CONFIG():
     from .config import CURL_CONFIG
     
@@ -29,7 +29,7 @@ def get_CONFIG():
         'curl': CURL_CONFIG
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_BINARIES():
     from .binaries import CURL_BINARY
     

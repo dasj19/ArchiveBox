@@ -1,6 +1,6 @@
 __package__ = 'archivebox.machine'
 
-import abx
+import abbx
 
 from django.contrib import admin
 from django.utils.html import format_html
@@ -87,7 +87,7 @@ class InstalledBinaryAdmin(ABIDModelAdmin):
 
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def register_admin(admin_site):
     admin_site.register(Machine, MachineAdmin)
     admin_site.register(NetworkInterface, NetworkInterfaceAdmin)

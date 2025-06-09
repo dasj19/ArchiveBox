@@ -5,10 +5,10 @@ __author__ = 'ArchiveBox'
 __homepage__ = 'https://github.com/git/git'
 __dependencies__ = []
 
-import abx
+import abbx
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_PLUGIN():
     return {
         'git': {
@@ -21,7 +21,7 @@ def get_PLUGIN():
         }
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_CONFIG():
     from .config import GIT_CONFIG
     
@@ -29,7 +29,7 @@ def get_CONFIG():
         'git': GIT_CONFIG
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_BINARIES():
     from .binaries import GIT_BINARY
     
@@ -37,7 +37,7 @@ def get_BINARIES():
         'git': GIT_BINARY,
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_EXTRACTORS():
     from .extractors import GIT_EXTRACTOR
     

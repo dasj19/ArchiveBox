@@ -5,7 +5,7 @@ from typing import List
 from pydantic import InstanceOf
 from pydantic_pkgr import BinProvider, BinaryOverrides, BinName
 
-from abx.archivebox.base_binary import BaseBinary, env, brew
+from abbx.archivebox.base_binary import BaseBinary, env, brew
 
 from .config import SONIC_CONFIG
 

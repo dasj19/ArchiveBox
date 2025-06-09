@@ -1,4 +1,4 @@
-__package__ = 'abx.archivebox'
+__package__ = 'abbx.archivebox'
 
 import os
 import importlib
@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 def load_archivebox_plugins(pm, plugins_dict: Dict[str, Path]):
-    """Load archivebox plugins, very similar to abx.load_plugins but it looks for a pydantic PLUGIN model + hooks in apps.py"""
+    """Load archivebox plugins, very similar to abbx.load_plugins but it looks for a pydantic PLUGIN model + hooks in apps.py"""
     LOADED_PLUGINS = {}
     for plugin_module, plugin_dir in reversed(plugins_dict.items()):
         # print(f'Loading plugin: {plugin_module} from {plugin_dir}')

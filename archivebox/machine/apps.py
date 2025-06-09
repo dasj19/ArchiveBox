@@ -2,7 +2,7 @@ __package__ = 'archivebox.machine'
 
 from django.apps import AppConfig
 
-import abx
+import abbx
 
 
 class MachineConfig(AppConfig):
@@ -12,7 +12,7 @@ class MachineConfig(AppConfig):
     verbose_name = 'Machine Info'
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def register_admin(admin_site):
     from machine.admin import register_admin
     register_admin(admin_site)

@@ -6,7 +6,7 @@ from pydantic import InstanceOf
 from pydantic_pkgr import BinProvider, BinName
 
 
-from abx.archivebox.base_binary import BaseBinary, env
+from abbx.archivebox.base_binary import BaseBinary, env
 
 from plugins_pkg.npm.binproviders import LIB_NPM_BINPROVIDER, SYS_NPM_BINPROVIDER
 

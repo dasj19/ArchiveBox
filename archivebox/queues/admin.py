@@ -1,6 +1,6 @@
 __package__ = 'archivebox.queues'
 
-import abx
+import abbx
 
 from django.contrib.auth import get_permission_codename
 
@@ -20,7 +20,7 @@ class CustomTaskModelAdmin(TaskModelAdmin):
 
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def register_admin(admin_site):
     admin_site.register(TaskModel, CustomTaskModelAdmin)
     admin_site.register(SignalInfoModel, SignalInfoModelAdmin)

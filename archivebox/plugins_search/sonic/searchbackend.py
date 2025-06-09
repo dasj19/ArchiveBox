@@ -2,7 +2,7 @@ __package__ = 'plugins_search.sonic'
 
 from typing import List, Generator, cast
 
-from abx.archivebox.base_searchbackend import BaseSearchBackend
+from abbx.archivebox.base_searchbackend import BaseSearchBackend
 
 
 from .config import SONIC_CONFIG, SONIC_LIB

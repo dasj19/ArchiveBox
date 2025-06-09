@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
-import abx
+import abbx
 
 
 class QueuesConfig(AppConfig):
@@ -8,7 +8,7 @@ class QueuesConfig(AppConfig):
     name = 'queues'
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def register_admin(admin_site):
     from queues.admin import register_admin
     register_admin(admin_site)

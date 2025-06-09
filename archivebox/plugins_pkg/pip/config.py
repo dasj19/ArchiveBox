@@ -3,7 +3,7 @@ __package__ = 'pip'
 from typing import List, Optional
 from pydantic import Field
 
-from abx.archivebox.base_configset import BaseConfigSet
+from abbx.archivebox.base_configset import BaseConfigSet
 
 
 class PipDependencyConfigs(BaseConfigSet):

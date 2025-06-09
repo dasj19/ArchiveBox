@@ -13,20 +13,20 @@ from .supervisor_util import get_or_create_supervisord_process
 # @db_task(queue="system_tasks", context=True, schedule=1)
 # def scheduler_tick():
 #     print('SCHEDULER TICK', timezone.now().isoformat())
-#     # abx.archivebox.events.on_scheduler_runloop_start(timezone.now(), machine=Machine.objects.get_current_machine())
+#     # abbx.archivebox.events.on_scheduler_runloop_start(timezone.now(), machine=Machine.objects.get_current_machine())
 
-#     # abx.archivebox.events.on_scheduler_tick_start(timezone.now(), machine=Machine.objects.get_current_machine())
+#     # abbx.archivebox.events.on_scheduler_tick_start(timezone.now(), machine=Machine.objects.get_current_machine())
     
 #     scheduled_crawls = CrawlSchedule.objects.filter(is_enabled=True)
 #     scheduled_crawls_due = scheduled_crawls.filter(next_run_at__lte=timezone.now())
     
 #     for scheduled_crawl in scheduled_crawls_due:
 #         try:
-#             abx.archivebox.events.on_crawl_schedule_tick(scheduled_crawl)
+#             abbx.archivebox.events.on_crawl_schedule_tick(scheduled_crawl)
 #         except Exception as e:
-#             abx.archivebox.events.on_crawl_schedule_failure(timezone.now(), machine=Machine.objects.get_current_machine(), error=e, schedule=scheduled_crawl)
+#             abbx.archivebox.events.on_crawl_schedule_failure(timezone.now(), machine=Machine.objects.get_current_machine(), error=e, schedule=scheduled_crawl)
     
-#     # abx.archivebox.events.on_scheduler_tick_end(timezone.now(), machine=Machine.objects.get_current_machine(), tasks=scheduled_tasks_due)
+#     # abbx.archivebox.events.on_scheduler_tick_end(timezone.now(), machine=Machine.objects.get_current_machine(), tasks=scheduled_tasks_due)
 
 def db_task_with_parent(func):
     """Decorator for db_task that sets the parent task for the db_task"""

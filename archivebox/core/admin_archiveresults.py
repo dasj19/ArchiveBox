@@ -12,7 +12,7 @@ from django.forms import forms
 
 from huey_monitor.admin import TaskModel
 
-import abx
+import abbx
 
 from archivebox.config import DATA_DIR
 from archivebox.config.common import SERVER_CONFIG
@@ -194,6 +194,6 @@ class ArchiveResultAdmin(ABIDModelAdmin):
 
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def register_admin(admin_site):
     admin_site.register(ArchiveResult, ArchiveResultAdmin)

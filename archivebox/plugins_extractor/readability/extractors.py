@@ -4,7 +4,7 @@ from pathlib import Path
 
 from pydantic_pkgr import BinName
 
-from abx.archivebox.base_extractor import BaseExtractor
+from abbx.archivebox.base_extractor import BaseExtractor
 
 from .binaries import READABILITY_BINARY
 

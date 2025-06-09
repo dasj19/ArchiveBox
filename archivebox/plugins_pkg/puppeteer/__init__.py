@@ -5,10 +5,10 @@ __author__ = 'ArchiveBox'
 __homepage__ = 'https://github.com/puppeteer/puppeteer'
 __dependencies__ = ['npm']
 
-import abx
+import abbx
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_PLUGIN():
     return {
         'puppeteer': {
@@ -21,7 +21,7 @@ def get_PLUGIN():
         }
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_CONFIG():
     from .config import PUPPETEER_CONFIG
     
@@ -29,7 +29,7 @@ def get_CONFIG():
         'puppeteer': PUPPETEER_CONFIG
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_BINARIES():
     from .binaries import PUPPETEER_BINARY
     
@@ -37,7 +37,7 @@ def get_BINARIES():
         'puppeteer': PUPPETEER_BINARY,
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_BINPROVIDERS():
     from .binproviders import PUPPETEER_BINPROVIDER
     

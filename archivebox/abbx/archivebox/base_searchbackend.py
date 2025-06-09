@@ -1,4 +1,4 @@
-__package__ = 'abx.archivebox'
+__package__ = 'abbx.archivebox'
 
 from typing import Iterable, List
 import abc

@@ -4,10 +4,10 @@ __version__ = '2024.10.14'
 __author__ = 'ArchiveBox'
 __homepage__ = 'https://github.com/microsoft/playwright-python'
 
-import abx
+import abbx
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_PLUGIN():
     return {
         'playwright': {
@@ -19,7 +19,7 @@ def get_PLUGIN():
         }
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_CONFIG():
     from .config import PLAYWRIGHT_CONFIG
     
@@ -27,7 +27,7 @@ def get_CONFIG():
         'playwright': PLAYWRIGHT_CONFIG
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_BINARIES():
     from .binaries import PLAYWRIGHT_BINARY
     
@@ -35,7 +35,7 @@ def get_BINARIES():
         'playwright': PLAYWRIGHT_BINARY,
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_BINPROVIDERS():
     from .binproviders import PLAYWRIGHT_BINPROVIDER
     

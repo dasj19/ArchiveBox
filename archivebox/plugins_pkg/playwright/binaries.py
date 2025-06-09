@@ -5,7 +5,7 @@ from typing import List
 from pydantic import InstanceOf
 from pydantic_pkgr import BinName, BinProvider
 
-from abx.archivebox.base_binary import BaseBinary, env
+from abbx.archivebox.base_binary import BaseBinary, env
 
 from plugins_pkg.pip.binproviders import SYS_PIP_BINPROVIDER, VENV_PIP_BINPROVIDER, LIB_PIP_BINPROVIDER
 

@@ -10,7 +10,7 @@ from rich import print
 from pydantic import Field, field_validator
 from django.utils.crypto import get_random_string
 
-from abx.archivebox.base_configset import BaseConfigSet
+from abbx.archivebox.base_configset import BaseConfigSet
 
 from .constants import CONSTANTS
 from .version import get_COMMIT_HASH, get_BUILD_TIME, VERSION

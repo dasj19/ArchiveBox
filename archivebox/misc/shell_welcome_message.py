@@ -13,7 +13,7 @@ import pydantic                            # noqa
 import requests                            # noqa
 import subprocess                          # noqa
 import archivebox                          # noqa
-import abx                                 # noqa
+import abbx                                 # noqa
 from benedict import benedict              # noqa
 from django.utils import timezone          # noqa
 from datetime import datetime, timedelta   # noqa
@@ -37,7 +37,7 @@ if __name__ == '__main__':
 
 
     # print the welcome message
-    prnt('[green]import re, os, sys, psutil, subprocess, reqiests, json, pydantic, benedict, django, abx[/]')
+    prnt('[green]import re, os, sys, psutil, subprocess, reqiests, json, pydantic, benedict, django, abbx[/]')
     prnt('[yellow4]# ArchiveBox Imports[/]')
     prnt('[yellow4]import archivebox[/]')
     prnt('[yellow4]from archivebox.main import {}[/]'.format(CLI_COMMAND_NAMES))

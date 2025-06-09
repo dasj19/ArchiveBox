@@ -9,10 +9,10 @@ from core.admin_snapshots import SnapshotAdmin
 from core.admin_archiveresults import ArchiveResultAdmin
 from core.admin_users import UserAdmin
 
-import abx
+import abbx
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def register_admin(admin_site):
     admin_site.register(get_user_model(), UserAdmin)
     admin_site.register(ArchiveResult, ArchiveResultAdmin)

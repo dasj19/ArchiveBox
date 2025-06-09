@@ -1,12 +1,12 @@
-__package__ = 'abx'
+__package__ = 'abbx'
 
 import importlib
 from pathlib import Path
 from typing import Dict, Callable, List
 
 from . import hookspec as base_spec
-from abx.hookspec import hookimpl, hookspec           # noqa
-from abx.manager import pm, PluginManager             # noqa
+from abbx.hookspec import hookimpl, hookspec           # noqa
+from abbx.manager import pm, PluginManager             # noqa
 
 
 pm.add_hookspecs(base_spec)
@@ -39,12 +39,12 @@ def find_plugins_in_dir(plugins_dir: Path, prefix: str) -> Dict[str, Path]:
     return {
         f"{prefix}.{plugin_entrypoint.parent.name}": plugin_entrypoint.parent
         for plugin_entrypoint in sorted(plugins_dir.glob("*/__init__.py"), key=get_plugin_order)
-        if plugin_entrypoint.parent.name != 'abx'
+        if plugin_entrypoint.parent.name != 'abbx'
     }   # "plugins_pkg.pip": "/app/archivebox/plugins_pkg/pip"
 
 
-def get_pip_installed_plugins(group='abx'):
-    """replaces pm.load_setuptools_entrypoints("abx"), finds plugins that registered entrypoints via pip"""
+def get_pip_installed_plugins(group='abbx'):
+    """replaces pm.load_setuptools_entrypoints("abbx"), finds plugins that registered entrypoints via pip"""
     import importlib.metadata
 
     DETECTED_PLUGINS = {}   # module_name: module_dir_path

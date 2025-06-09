@@ -4,10 +4,10 @@ __version__ = '2024.10.14'
 __author__ = 'ArchiveBox'
 __homepage__ = 'https://github.com/yt-dlp/yt-dlp'
 
-import abx
+import abbx
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_PLUGIN():
     return {
         'ytdlp': {
@@ -19,7 +19,7 @@ def get_PLUGIN():
         }
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_CONFIG():
     from .config import YTDLP_CONFIG
     
@@ -27,7 +27,7 @@ def get_CONFIG():
         'ytdlp': YTDLP_CONFIG
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_BINARIES():
     from .binaries import YTDLP_BINARY, FFMPEG_BINARY
     
@@ -36,7 +36,7 @@ def get_BINARIES():
         'ffmpeg': FFMPEG_BINARY,
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def ready():
     from .config import YTDLP_CONFIG
     YTDLP_CONFIG.validate()

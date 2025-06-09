@@ -13,7 +13,7 @@ from pydantic_pkgr import BinProvider, BinName, BinaryOverrides, SemVer
 
 from archivebox import VERSION
 
-from abx.archivebox.base_binary import BaseBinary, BaseBinProvider, env, apt, brew
+from abbx.archivebox.base_binary import BaseBinary, BaseBinProvider, env, apt, brew
 
 from archivebox.misc.logging import hint
 

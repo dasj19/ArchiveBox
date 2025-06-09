@@ -4,10 +4,10 @@ __version__ = '2024.10.14'
 __author__ = 'ArchiveBox'
 __homepage__ = 'https://github.com/pypa/pip'
 
-import abx
+import abbx
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_PLUGIN():
     return {
         'pip': {
@@ -19,7 +19,7 @@ def get_PLUGIN():
         }
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_CONFIG():
     from .config import PIP_CONFIG
     
@@ -27,7 +27,7 @@ def get_CONFIG():
         'pip': PIP_CONFIG
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_BINARIES():
     from .binaries import ARCHIVEBOX_BINARY, PYTHON_BINARY, DJANGO_BINARY, SQLITE_BINARY, PIP_BINARY, PIPX_BINARY
     
@@ -40,7 +40,7 @@ def get_BINARIES():
         'pipx': PIPX_BINARY,
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_BINPROVIDERS():
     from .binproviders import SYS_PIP_BINPROVIDER, VENV_PIP_BINPROVIDER, LIB_PIP_BINPROVIDER
     

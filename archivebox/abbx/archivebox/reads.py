@@ -1,11 +1,11 @@
-__package__ = 'abx.archivebox'
+__package__ = 'abbx.archivebox'
 
 import importlib
 from typing import Dict, Set, Any, TYPE_CHECKING
 
 from benedict import benedict
 
-import abx
+import abbx
 from .. import pm
 
 if TYPE_CHECKING:
@@ -32,7 +32,7 @@ def get_PLUGIN(plugin_id: str) -> Dict[str, Any]:
     if not package:
         return {'id': plugin_id, 'hooks': {}}
     module = importlib.import_module(package)
-    hooks = abx.get_plugin_hooks(module.__package__)
+    hooks = abbx.get_plugin_hooks(module.__package__)
     assert plugin_info and (plugin_info.get('id') or plugin_info.get('ID') or hooks)
     
     return benedict({
@@ -74,7 +74,7 @@ def get_FLAT_CONFIG() -> Dict[str, Any]:
 
 def get_BINPROVIDERS() -> Dict[str, 'BaseBinProvider']:
     # TODO: move these to plugins
-    from abx.archivebox.base_binary import apt, brew, env
+    from abbx.archivebox.base_binary import apt, brew, env
     builtin_binproviders = {
         'env': env,
         'apt': apt,

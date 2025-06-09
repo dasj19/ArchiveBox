@@ -18,7 +18,7 @@ from pydantic_pkgr import (
 from archivebox.config import CONSTANTS
 from archivebox.config.permissions import ARCHIVEBOX_USER
 
-from abx.archivebox.base_binary import BaseBinProvider
+from abbx.archivebox.base_binary import BaseBinProvider
 
 from plugins_pkg.npm.binproviders import SYS_NPM_BINPROVIDER
 

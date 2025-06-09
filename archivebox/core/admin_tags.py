@@ -3,7 +3,7 @@ __package__ = 'archivebox.core'
 from django.contrib import admin
 from django.utils.html import format_html, mark_safe
 
-import abx
+import abbx
 
 from abid_utils.admin import ABIDModelAdmin
 from archivebox.misc.paginators import AccelleratedPaginator
@@ -159,7 +159,7 @@ class TagAdmin(ABIDModelAdmin):
 #     ordering = ['-id']
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def register_admin(admin_site):
     admin_site.register(Tag, TagAdmin)
 

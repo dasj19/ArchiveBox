@@ -4,7 +4,7 @@ import codecs
 import sqlite3
 from typing import List, Iterable
 
-from abx.archivebox.base_searchbackend import BaseSearchBackend
+from abbx.archivebox.base_searchbackend import BaseSearchBackend
 
 from .config import SQLITEFTS_CONFIG
 

@@ -1,4 +1,4 @@
-__package__ = 'abx.django'
+__package__ = 'abbx.django'
 
 from ..hookspec import hookspec
 

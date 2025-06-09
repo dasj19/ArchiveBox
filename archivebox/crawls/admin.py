@@ -1,6 +1,6 @@
 __package__ = 'archivebox.crawls'
 
-import abx
+import abbx
 
 from abid_utils.admin import ABIDModelAdmin
 
@@ -23,6 +23,6 @@ class CrawlAdmin(ABIDModelAdmin):
 
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def register_admin(admin_site):
     admin_site.register(Crawl, CrawlAdmin)

@@ -8,7 +8,7 @@ from django.core.exceptions import ImproperlyConfigured
 
 from pydantic import Field
 
-from abx.archivebox.base_configset import BaseConfigSet
+from abbx.archivebox.base_configset import BaseConfigSet
 
 from archivebox.config.common import SEARCH_BACKEND_CONFIG
 

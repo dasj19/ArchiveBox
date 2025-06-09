@@ -2,7 +2,7 @@ __package__ = 'plugins_extractor.mercury'
 
 from pathlib import Path
 
-from abx.archivebox.base_extractor import BaseExtractor, ExtractorName
+from abbx.archivebox.base_extractor import BaseExtractor, ExtractorName
 
 from .binaries import MERCURY_BINARY
 

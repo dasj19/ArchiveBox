@@ -10,7 +10,7 @@ from pydantic_pkgr import PipProvider, BinName, BinProviderName
 
 from archivebox.config import CONSTANTS
 
-from abx.archivebox.base_binary import BaseBinProvider
+from abbx.archivebox.base_binary import BaseBinProvider
 
 
 ###################### Config ##########################

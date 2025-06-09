@@ -6,10 +6,10 @@ __author__ = 'ArchiveBox'
 __homepage__ = 'https://github.com/ArchiveBox/ArchiveBox/tree/dev/archivebox/plugins_extractor/wget'
 __dependencies__ = []
 
-import abx
+import abbx
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_PLUGIN():
     return {
         __id__: {
@@ -23,7 +23,7 @@ def get_PLUGIN():
         }
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_CONFIG():
     from .config import WGET_CONFIG
         
@@ -31,7 +31,7 @@ def get_CONFIG():
         __id__: WGET_CONFIG
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_BINARIES():
     from .binaries import WGET_BINARY
     
@@ -39,7 +39,7 @@ def get_BINARIES():
         'wget': WGET_BINARY,
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_EXTRACTORS():
     from .extractors import WGET_EXTRACTOR, WARC_EXTRACTOR
     
@@ -48,7 +48,7 @@ def get_EXTRACTORS():
         'warc': WARC_EXTRACTOR,
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def ready():
     from .config import WGET_CONFIG
     WGET_CONFIG.validate()

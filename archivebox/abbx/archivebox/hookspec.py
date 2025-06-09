@@ -1,4 +1,4 @@
-__package__ = 'abx.archivebox'
+__package__ = 'abbx.archivebox'
 
 from typing import Dict, Any
 
@@ -42,7 +42,7 @@ def get_SEARCHBACKENDS() -> Dict[str, BaseSearchBackend]:
 
 
 ##############################################################
-# provided by abx.pydantic_pkgr.hookspec:
+# provided by abbx.pydantic_pkgr.hookspec:
 # @hookspec
 # def get_BINARIES() -> Dict[str, BaseBinary]:
 #     return {}

@@ -5,10 +5,10 @@ __author__ = 'ArchiveBox'
 __homepage__ = 'https://github.com/ArchiveBox/archivebox'
 __dependencies__ = []
 
-import abx
+import abbx
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_PLUGIN():
     return {
         'sqlitefts': {
@@ -21,7 +21,7 @@ def get_PLUGIN():
         }
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_CONFIG():
     from .config import SQLITEFTS_CONFIG
     
@@ -30,7 +30,7 @@ def get_CONFIG():
     }
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_SEARCHBACKENDS():
     from .searchbackend import SQLITEFTS_SEARCH_BACKEND
     

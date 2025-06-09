@@ -5,7 +5,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.utils.html import format_html, mark_safe
 from django.contrib.auth import get_user_model
 
-import abx
+import abbx
 
 
 class CustomUserAdmin(UserAdmin):
@@ -86,6 +86,6 @@ class CustomUserAdmin(UserAdmin):
 
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def register_admin(admin_site):
     admin_site.register(get_user_model(), CustomUserAdmin)

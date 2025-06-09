@@ -1,4 +1,4 @@
-__package__ = 'abx.archivebox'
+__package__ = 'abbx.archivebox'
 
 import os
 import inspect
@@ -14,7 +14,7 @@ from django.utils.html import format_html, mark_safe
 from admin_data_views.typing import TableContext, ItemContext
 from admin_data_views.utils import render_with_table_view, render_with_item_view, ItemLink
 
-import abx.archivebox.reads
+import abbx.archivebox.reads
 
 from archivebox.config import CONSTANTS
 from archivebox.misc.util import parse_date
@@ -85,8 +85,8 @@ def binaries_list_view(request: HttpRequest, **kwargs) -> TableContext:
         if '_BINARY' in key or '_VERSION' in key
     }
 
-    for plugin_id, plugin in abx.archivebox.reads.get_PLUGINS().items():
-        plugin = abx.archivebox.reads.get_PLUGIN(plugin_id)
+    for plugin_id, plugin in abbx.archivebox.reads.get_PLUGINS().items():
+        plugin = abbx.archivebox.reads.get_PLUGIN(plugin_id)
         if not plugin.hooks.get('get_BINARIES'):
             continue
         
@@ -135,8 +135,8 @@ def binary_detail_view(request: HttpRequest, key: str, **kwargs) -> ItemContext:
 
     binary = None
     plugin = None
-    for plugin_id in abx.archivebox.reads.get_PLUGINS().keys():
-        loaded_plugin = abx.archivebox.reads.get_PLUGIN(plugin_id)
+    for plugin_id in abbx.archivebox.reads.get_PLUGINS().keys():
+        loaded_plugin = abbx.archivebox.reads.get_PLUGIN(plugin_id)
         try:
             for loaded_binary in loaded_plugin.hooks.get_BINARIES().values():
                 if loaded_binary.name == key:
@@ -217,7 +217,7 @@ def plugins_list_view(request: HttpRequest, **kwargs) -> TableContext:
 
     for plugin_id in settings.PLUGINS.keys():
         
-        plugin = abx.archivebox.reads.get_PLUGIN(plugin_id)
+        plugin = abbx.archivebox.reads.get_PLUGIN(plugin_id)
         plugin.hooks.get_BINPROVIDERS = plugin.hooks.get('get_BINPROVIDERS', lambda: {})
         plugin.hooks.get_BINARIES = plugin.hooks.get('get_BINARIES', lambda: {})
         plugin.hooks.get_CONFIG = plugin.hooks.get('get_CONFIG', lambda: {})
@@ -263,7 +263,7 @@ def plugin_detail_view(request: HttpRequest, key: str, **kwargs) -> ItemContext:
 
     assert plugin_id, f'Could not find a plugin matching the specified name: {key}'
 
-    plugin = abx.archivebox.reads.get_PLUGIN(plugin_id)
+    plugin = abbx.archivebox.reads.get_PLUGIN(plugin_id)
 
     return ItemContext(
         slug=key,

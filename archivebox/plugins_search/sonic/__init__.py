@@ -5,10 +5,10 @@ __author__ = 'ArchiveBox'
 __homepage__ = 'https://github.com/valeriansaliou/sonic'
 __dependencies__ = []
 
-import abx
+import abbx
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_PLUGIN():
     return {
         'sonic': {
@@ -21,7 +21,7 @@ def get_PLUGIN():
         }
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_CONFIG():
     from .config import SONIC_CONFIG
     
@@ -30,7 +30,7 @@ def get_CONFIG():
     }
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_BINARIES():
     from .binaries import SONIC_BINARY
     
@@ -39,7 +39,7 @@ def get_BINARIES():
     }
 
 
-@abx.hookimpl
+@abbx.hookimpl
 def get_SEARCHBACKENDS():
     from .searchbackend import SONIC_SEARCH_BACKEND
     
@@ -47,7 +47,7 @@ def get_SEARCHBACKENDS():
         'sonic': SONIC_SEARCH_BACKEND,
     }
 
-@abx.hookimpl
+@abbx.hookimpl
 def ready():
     from .config import SONIC_CONFIG
     SONIC_CONFIG.validate()

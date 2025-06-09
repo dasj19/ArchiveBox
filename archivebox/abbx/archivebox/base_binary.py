@@ -1,4 +1,4 @@
-__package__ = "abx.archivebox"
+__package__ = "abbx.archivebox"
 
 import os
 from typing import Optional, cast
@@ -19,7 +19,7 @@ from archivebox.config.permissions import ARCHIVEBOX_USER
 
 class BaseBinProvider(BinProvider):
     
-    # TODO: add install/load/load_or_install methods as abx.hookimpl methods
+    # TODO: add install/load/load_or_install methods as abbx.hookimpl methods
     
     @property
     def admin_url(self) -> str:

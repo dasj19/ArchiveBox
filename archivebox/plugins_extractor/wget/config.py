@@ -6,7 +6,7 @@ from pathlib import Path
 
 from pydantic import Field
 
-from abx.archivebox.base_configset import BaseConfigSet
+from abbx.archivebox.base_configset import BaseConfigSet
 
 from archivebox.config.common import ARCHIVING_CONFIG, STORAGE_CONFIG
 from archivebox.misc.logging import STDERR

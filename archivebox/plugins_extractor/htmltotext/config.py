@@ -1,7 +1,7 @@
 __package__ = 'plugins_extractor.htmltotext'
 
 
-from abx.archivebox.base_configset import BaseConfigSet
+from abbx.archivebox.base_configset import BaseConfigSet
 
 
 class HtmltotextConfig(BaseConfigSet):

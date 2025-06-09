@@ -7,7 +7,7 @@ from pydantic_pkgr import NpmProvider, PATHStr, BinProviderName
 
 from archivebox.config import DATA_DIR, CONSTANTS
 
-from abx.archivebox.base_binary import BaseBinProvider
+from abbx.archivebox.base_binary import BaseBinProvider
 
 
 

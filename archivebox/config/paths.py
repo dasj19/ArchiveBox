@@ -156,7 +156,7 @@ def get_or_create_working_tmp_dir(autofix=True, quiet=False):
         Path('~/.tmp/archivebox').expanduser() / get_collection_id(),          # ~/.tmp/archivebox/abc5d8512
         Path(tempfile.gettempdir()) / 'archivebox' / get_collection_id(),      # /var/folders/qy/6tpfrpx100j1t4l312nz683m0000gn/T/archivebox/abc5d8512
         Path(tempfile.gettempdir()) / 'archivebox' / get_collection_id()[:4],  # /var/folders/qy/6tpfrpx100j1t4l312nz683m0000gn/T/archivebox/abc5d
-        Path(tempfile.gettempdir()) / 'abx' / get_collection_id()[:4],         # /var/folders/qy/6tpfrpx100j1t4l312nz683m0000gn/T/abx/abc5
+        Path(tempfile.gettempdir()) / 'abbx' / get_collection_id()[:4],         # /var/folders/qy/6tpfrpx100j1t4l312nz683m0000gn/T/abbx/abc5
     ]
     for candidate in CANDIDATES:
         try:

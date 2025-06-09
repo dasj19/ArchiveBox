@@ -1,4 +1,4 @@
-__package__ = 'abx.archivebox'
+__package__ = 'abbx.archivebox'
 
 import json
 import os
@@ -12,7 +12,7 @@ from pydantic_pkgr import BinName
 from django.utils.functional import cached_property
 from django.utils import timezone
 
-import abx
+import abbx
 
 from .base_binary import BaseBinary
 
@@ -64,7 +64,7 @@ class BaseExtractor:
         #     return False
         return True
 
-    @abx.hookimpl
+    @abbx.hookimpl
     def extract(self, snapshot_id: str) -> Dict[str, Any]:
         from core.models import Snapshot
         from archivebox import CONSTANTS
@@ -194,8 +194,8 @@ class BaseExtractor:
     
     @cached_property
     def BINARY(self) -> BaseBinary:
-        import abx.archivebox.reads
-        for binary in abx.archivebox.reads.get_BINARIES().values():
+        import abbx.archivebox.reads
+        for binary in abbx.archivebox.reads.get_BINARIES().values():
             if binary.name == self.binary:
                 return binary
         raise ValueError(f'Binary {self.binary} not found')
@@ -214,6 +214,6 @@ class BaseExtractor:
         from machine.models import NetworkInterface
         return NetworkInterface.objects.current()
 
-    @abx.hookimpl
+    @abbx.hookimpl
     def get_EXTRACTORS(self):
         return [self]
