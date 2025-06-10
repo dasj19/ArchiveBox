@@ -24,7 +24,7 @@ class BinaryOverrides(BaseModel):
 class SinglefileBinary(BaseBinary):
     name: BinName = SINGLEFILE_CONFIG.SINGLEFILE_BINARY
     binproviders_supported: List[InstanceOf[BinProvider]] = [LIB_NPM_BINPROVIDER, SYS_NPM_BINPROVIDER, env]
-    overrides: BinaryOverrides = BinaryOverrides()
+    #overrides: BinaryOverrides = BinaryOverrides()
 
     # overrides: BinaryOverrides = BinaryOverrides(
     #     overrides={
