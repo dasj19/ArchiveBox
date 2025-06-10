@@ -8,7 +8,7 @@ from django.utils.html import format_html, mark_safe
 from django.core.exceptions import ValidationError
 from django.urls import reverse, resolve
 from django.utils import timezone
-from django.forms import forms
+from django import forms
 
 from huey_monitor.admin import TaskModel
 
