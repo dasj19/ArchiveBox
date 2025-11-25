@@ -81,7 +81,7 @@ class Tag(ModelWithSerializers, ABIDModel):
     # crawl_set: models.Manager['Crawl']
 
     class Meta(TypedModelMeta):
-        app_label = 'core.models.Tag'
+        app_label = 'core'
         verbose_name = "Tag"
         verbose_name_plural = "Tags"
 

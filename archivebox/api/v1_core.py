@@ -341,7 +341,7 @@ def get_snapshot(request, snapshot_id: str, with_archiveresults: bool=True):
 
 
 class TagSchema(Schema):
-    TYPE: str = 'core.models.Tag'
+    TYPE: str = 'archivebox.core.models.Tag'
 
     id: UUID
     abid: str
