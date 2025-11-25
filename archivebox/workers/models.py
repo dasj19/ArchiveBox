@@ -14,7 +14,7 @@ from django.utils import timezone
 from django.utils.functional import classproperty
 
 from base_models.models import ABIDModel, ABIDField
-from machine.models import Process
+from archivebox.machine.models import Process
 
 from statemachine import registry, StateMachine, State
 
@@ -377,7 +377,7 @@ class Event(ABIDModel):
 
     objects: EventManager = EventManager.from_queryset(EventQuerySet)()
     
-    child_events: models.RelatedManager['Event']
+    # child_events is a reverse relation created by Django at runtime
     
     @classmethod
     def get_next_timestamp(cls):

@@ -25,9 +25,9 @@ from archivebox.extractors import archive_links
 from archivebox.base_models.admin import ABIDModelAdmin
 from archivebox.workers.tasks import bg_archive_links, bg_add
 
-from core.models import Tag
-from core.admin_tags import TagInline
-from core.admin_archiveresults import ArchiveResultInline, result_url
+from archivebox.core.models import Tag
+from archivebox.core.admin_tags import TagInline
+from archivebox.core.admin_archiveresults import ArchiveResultInline, result_url
 
 
 # GLOBAL_CONTEXT = {'VERSION': VERSION, 'VERSIONS_AVAILABLE': [], 'CAN_UPGRADE': False}

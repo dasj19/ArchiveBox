@@ -5,7 +5,7 @@ from signal_webhooks.utils import get_webhook_model
 
 from archivebox.base_models.admin import ABIDModelAdmin
 
-from api.models import APIToken
+from archivebox.api.models import APIToken
 
 
 class APITokenAdmin(ABIDModelAdmin):

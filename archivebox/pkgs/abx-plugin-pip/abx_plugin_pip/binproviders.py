@@ -3,10 +3,11 @@ import sys
 import site
 from pathlib import Path
 from typing import Optional
+from pydantic import BaseModel
 
 from benedict import benedict
 
-from abx_pkg import PipProvider, BinName, BinProviderName
+from pydantic_pkgr import PipProvider, BinName, BinProviderName
 
 import abx
 
@@ -19,6 +20,9 @@ brew = DEFAULT_BINPROVIDERS.brew
 
 
 ###################### Config ##########################
+class BinProviderOverrides(BaseModel):
+    # Add any fields that are required
+    pass
 
 class SystemPipBinProvider(PipProvider):
     name: BinProviderName = "sys_pip"

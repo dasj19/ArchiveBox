@@ -13,7 +13,7 @@ from statemachine import State, StateMachine
 
 # from workers.actor import ActorType
 
-from core.models import Snapshot, ArchiveResult
+from archivebox.core.models import Snapshot, ArchiveResult
 
 
 class SnapshotMachine(StateMachine, strict_states=True):

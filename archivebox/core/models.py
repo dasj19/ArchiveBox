@@ -36,21 +36,28 @@ from archivebox.base_models.models import (
     ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID, ModelWithKVTags,  # ModelWithStateMachine
     ModelWithOutputDir, ModelWithConfig, ModelWithNotes, ModelWithHealthStats
 )
-from workers.models import ModelWithStateMachine
-from workers.tasks import bg_archive_snapshot
-from tags.models import KVTag
-# from machine.models import Machine, NetworkInterface
+from archivebox.workers.models import ModelWithStateMachine
+from archivebox.workers.tasks import bg_archive_snapshot
+from archivebox.tags.models import KVTag
+import sys
 
-from crawls.models import Seed, Crawl, CrawlSchedule
+# Ensure `core.models` resolves to this module object as well so that
+# importing `core.models` (without the `archivebox.` prefix) will
+# reference the same module and not cause Django to register models
+# twice under different module names.
+sys.modules.setdefault('core.models', sys.modules.get(__name__))
+from archivebox.machine.models import Machine, NetworkInterface
+
+from archivebox.crawls.models import Seed, Crawl, CrawlSchedule
 
 
-class Tag(ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID, ABIDModel):
+class Tag(ModelWithSerializers, ABIDModel):
     """
     Old tag model, loosely based on django-taggit model + ABID base.
     
     Being phazed out in favor of archivebox.tags.models.ATag
     """
-    abid_prefix = 'tag_'
+
     abid_ts_src = 'self.created_at'
     abid_uri_src = 'self.slug'
     abid_subtype_src = '"03"'
@@ -60,7 +67,7 @@ class Tag(ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID, ABIDMode
     read_only_fields = ('id', 'abid', 'created_at', 'created_by', 'slug')
 
     id = models.UUIDField(primary_key=True, default=None, null=False, editable=False, unique=True, verbose_name='ID')
-    abid = ABIDField(prefix=abid_prefix)
+    abid = ABIDField(prefix='tag_')
 
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=get_or_create_system_user_pk, null=False, related_name='tag_set')
     created_at = AutoDateTimeField(default=None, null=False, db_index=True)
@@ -74,6 +81,7 @@ class Tag(ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID, ABIDMode
     # crawl_set: models.Manager['Crawl']
 
     class Meta(TypedModelMeta):
+        app_label = 'core.models.Tag'
         verbose_name = "Tag"
         verbose_name_plural = "Tags"
 
@@ -157,12 +165,8 @@ class SnapshotManager(models.Manager):
 
 
 class Snapshot(
-    ModelWithReadOnlyFields,
-    ModelWithSerializers,
-    ModelWithUUID,
-    ModelWithKVTags,
-    ABIDModel,
     ModelWithOutputDir,
+    ModelWithKVTags,
     ModelWithConfig,
     ModelWithNotes,
     ModelWithHealthStats,
@@ -176,9 +180,22 @@ class Snapshot(
     # self.as_csv_row() -> str
     # self.as_html_icon(), .as_html_embed(), .as_html_row(), ...
     
+    ### ModelWithStateMachine - Define StatusChoices first
+    class StatusChoices(models.TextChoices):
+        INITIAL = 'initial', 'Initial'
+        QUEUED = 'queued', 'Queued'
+        STARTED = 'started', 'Started'
+        BACKOFF = 'backoff', 'Waiting to retry'
+        SUCCEEDED = 'succeeded', 'Succeeded'
+        FAILED = 'failed', 'Failed'
+        SKIPPED = 'skipped', 'Skipped'
+        SEALED = 'sealed', 'Sealed'
+    
+    INITIAL_STATE = StatusChoices.INITIAL
+    
     ### ModelWithReadOnlyFields
     read_only_fields = ('id', 'abid', 'created_at', 'created_by_id', 'url', 'timestamp', 'bookmarked_at', 'crawl_id')
-    
+    abid_prefix = 'snp_'
     ### Immutable fields:
     id = models.UUIDField(primary_key=True, default=None, null=False, editable=False, unique=True, verbose_name='ID')
     abid = ABIDField(prefix=abid_prefix)
@@ -197,7 +214,7 @@ class Snapshot(
     
     ### ModelWithStateMachine
     retry_at = ModelWithStateMachine.RetryAtField(default=timezone.now)
-    status = ModelWithStateMachine.StatusField(choices=StatusChoices, default=StatusChoices.QUEUED)
+    status = ModelWithStateMachine.StatusField(choices=StatusChoices.choices, default=StatusChoices.QUEUED)
     
     ### ModelWithConfig
     config = models.JSONField(default=dict, null=False, blank=False, editable=True)
@@ -217,13 +234,13 @@ class Snapshot(
     tags = models.ManyToManyField(Tag, blank=True, through=SnapshotTag, related_name='snapshot_set', through_fields=('snapshot', 'tag'))
     
     # new-style tags (new key-value tags defined by tags.models.KVTag & ModelWithKVTags):
-    kvtag_set = tag_set = GenericRelation(
-        KVTag,
-        related_query_name="snapshot",
-        content_type_field="obj_type",
-        object_id_field="obj_id",
-        order_by=('created_at',),
-    )
+    # kvtag_set = tag_set = GenericRelation(
+    #     KVTag,
+    #     related_query_name="snapshot",
+    #     content_type_field="obj_type",
+    #     object_id_field="obj_id",
+
+    # )
     
     ### ABIDModel
     abid_prefix = 'snp_'
@@ -245,12 +262,14 @@ class Snapshot(
     state_machine_name = 'core.statemachines.SnapshotMachine'
     state_field_name = 'status'
     retry_at_field_name = 'retry_at'
-    StatusChoices = ModelWithStateMachine.StatusChoices
     active_state = StatusChoices.STARTED
     
     ### Relations & Managers
     objects = SnapshotManager()
     archiveresult_set: models.Manager['ArchiveResult']
+    
+    class Meta:
+        pass
     
     def save(self, *args, **kwargs):
         print(f'Snapshot[{self.ABID}].save()')
@@ -295,7 +314,7 @@ class Snapshot(
         return repr(self)
 
     @classmethod
-    def from_json(cls, fields: dict[str, Any]) -> Self:
+    def from_json(cls, fields: dict[str, Any]) -> 'Snapshot':
         # print('LEGACY from_json()')
         return cls.from_dict(fields)
 
@@ -624,11 +643,9 @@ class ArchiveResultManager(models.Manager):
 
 
 class ArchiveResult(
-    ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID, ModelWithKVTags, ABIDModel,
     ModelWithOutputDir, ModelWithConfig, ModelWithNotes, ModelWithHealthStats, ModelWithStateMachine
 ):
     ### ABIDModel
-    abid_prefix = 'res_'
     abid_ts_src = 'self.snapshot.created_at'
     abid_uri_src = 'self.snapshot.url'
     abid_subtype_src = 'self.extractor'
@@ -672,7 +689,7 @@ class ArchiveResult(
 
     ### Immutable fields:
     id = models.UUIDField(primary_key=True, default=None, null=False, editable=False, unique=True, verbose_name='ID')
-    abid = ABIDField(prefix=abid_prefix)
+    abid = ABIDField(prefix='res_')
 
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, related_name='archiveresult_set', db_index=True)
     created_at = AutoDateTimeField(default=None, null=False, db_index=True)

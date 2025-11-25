@@ -97,7 +97,7 @@ def extract_title_with_regex(html):
 def save_title(link: Link, out_dir: Optional[Path]=None, timeout: int=CURL_CONFIG.CURL_TIMEOUT) -> ArchiveResult:
     """try to guess the page's title from its content"""
 
-    from core.models import Snapshot
+    from archivebox.core.models import Snapshot
 
     curl_binary = CURL_BINARY.load()
     assert curl_binary.abspath and curl_binary.version

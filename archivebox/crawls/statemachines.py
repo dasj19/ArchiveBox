@@ -10,7 +10,7 @@ from rich import print
 from statemachine import State, StateMachine
 
 # from workers.actor import ActorType
-from crawls.models import Crawl
+from archivebox.crawls.models import Crawl
 
 
 class CrawlMachine(StateMachine, strict_states=True):
@@ -45,7 +45,7 @@ class CrawlMachine(StateMachine, strict_states=True):
         return bool(self.crawl.seed and self.crawl.seed.uri)
         
     def is_finished(self) -> bool:
-        from core.models import Snapshot, ArchiveResult
+        from archivebox.core.models import Snapshot, ArchiveResult
         
         # check that at least one snapshot exists for this crawl
         snapshots = Snapshot.objects.filter(crawl=self.crawl)

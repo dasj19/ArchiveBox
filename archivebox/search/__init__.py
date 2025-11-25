@@ -68,7 +68,7 @@ def write_search_index(link: Link, texts: Union[List[str], None]=None, out_dir: 
         return
 
     if not skip_text_index and texts:
-        from core.models import Snapshot
+        from archivebox.core.models import Snapshot
 
         snap = Snapshot.objects.filter(url=link.url).first()
         backend = import_backend()
@@ -84,7 +84,7 @@ def write_search_index(link: Link, texts: Union[List[str], None]=None, out_dir: 
 
 @enforce_types
 def query_search_index(query: str, out_dir: Path=settings.DATA_DIR) -> QuerySet:
-    from core.models import Snapshot
+    from archivebox.core.models import Snapshot
 
     if SEARCH_BACKEND_CONFIG.USE_SEARCHING_BACKEND:
         backend = import_backend()
@@ -124,7 +124,7 @@ def index_links(links: Union[List[Link],None], out_dir: Path=settings.DATA_DIR):
     if not links:
         return
 
-    from core.models import Snapshot, ArchiveResult
+    from archivebox.core.models import Snapshot, ArchiveResult
 
     for link in links:
         snap = Snapshot.objects.filter(url=link.url).first()

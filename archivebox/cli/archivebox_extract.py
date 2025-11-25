@@ -15,7 +15,7 @@ from archivebox.misc.util import enforce_types, docstring
 
 
 if TYPE_CHECKING:
-    from core.models import ArchiveResult
+    from archivebox.core.models import ArchiveResult
 
 
 ORCHESTRATOR = None

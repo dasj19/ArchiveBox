@@ -9,7 +9,7 @@
 # import archivebox
 # from archivebox import CONSTANTS
 
-# from core.models import Snapshot
+# from archivebox.core.models import Snapshot
 # from .models import File
 
 

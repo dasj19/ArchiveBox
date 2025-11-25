@@ -28,23 +28,22 @@ class ArchiveboxBinary(Binary):
     name: BinName = 'archivebox'
 
     binproviders_supported: List[InstanceOf[BinProvider]] = [VENV_PIP_BINPROVIDER, SYS_PIP_BINPROVIDER, apt, brew, env]
+    
+    # Assuming it's a standard dictionary
     overrides: BinaryOverrides = {
         VENV_PIP_BINPROVIDER.name:  {'packages': [], 'version': get_archivebox_version},
         SYS_PIP_BINPROVIDER.name:   {'packages': [], 'version': get_archivebox_version},
         apt.name:                   {'packages': [], 'version': get_archivebox_version},
         brew.name:                  {'packages': [], 'version': get_archivebox_version},
     }
-    
-    # @validate_call
+
     def install(self, **kwargs):
-        return self.load()                  # obviously it's already installed if we are running this ;)
-    
-    # @validate_call
+        return self.load()
+
     def load_or_install(self, **kwargs):
-        return self.load()                  # obviously it's already installed if we are running this ;)
+        return self.load()
 
 ARCHIVEBOX_BINARY = ArchiveboxBinary()
-
 
 class PythonBinary(Binary):
     name: BinName = 'python'

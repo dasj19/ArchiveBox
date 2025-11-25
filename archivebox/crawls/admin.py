@@ -7,8 +7,8 @@ from archivebox import DATA_DIR
 
 from archivebox.base_models.admin import ABIDModelAdmin
 
-from core.models import Snapshot
-from crawls.models import Seed, Crawl, CrawlSchedule
+from archivebox.core.models import Snapshot
+from archivebox.crawls.models import Seed, Crawl, CrawlSchedule
 
 
 class SeedAdmin(ABIDModelAdmin):

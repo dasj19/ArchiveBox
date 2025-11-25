@@ -433,7 +433,7 @@ class Link(BaseModel):
 
     def as_snapshot(self):
         """Implement this based on your Django model requirements"""
-        from core.models import Snapshot
+        from archivebox.core.models import Snapshot
         return Snapshot.objects.get(url=self.url)
 
     # Helper methods

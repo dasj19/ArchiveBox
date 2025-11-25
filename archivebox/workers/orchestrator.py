@@ -78,8 +78,8 @@ class Orchestrator:
         # returns a Dict of all discovered {actor_type_id: ActorType} across the codebase
         # override this method in a subclass to customize the actor types that are used
         # return {'Snapshot': SnapshotWorker, 'ArchiveResult_chrome': ChromeActorType, ...}
-        from crawls.statemachines import CrawlWorker
-        from core.statemachines import SnapshotWorker, ArchiveResultWorker   
+        from archivebox.crawls.statemachines import CrawlWorker
+        from archivebox.core.statemachines import SnapshotWorker, ArchiveResultWorker   
         return {
             'CrawlWorker': CrawlWorker,
             'SnapshotWorker': SnapshotWorker,

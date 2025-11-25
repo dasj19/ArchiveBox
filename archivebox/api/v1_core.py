@@ -14,9 +14,9 @@ from ninja import Router, Schema, FilterSchema, Field, Query
 from ninja.pagination import paginate, PaginationBase
 from ninja.errors import HttpError
 
-from core.models import Snapshot, ArchiveResult, Tag
-from api.models import APIToken, OutboundWebhook
-from api.v1_crawls import CrawlSchema, SeedSchema
+from archivebox.core.models import Snapshot, ArchiveResult, Tag
+from archivebox.api.models import APIToken, OutboundWebhook
+from archivebox.api.v1_crawls import CrawlSchema, SeedSchema
 
 # from .auth import API_AUTH_METHODS
 
@@ -428,13 +428,13 @@ def get_any(request, abid: str):
         pass
     
     try:
-        from api.v1_crawls import get_seed
+        from archivebox.api.v1_crawls import get_seed
         response = response or get_seed(request, abid)
     except Exception:
         pass
     
     try:
-        from api.v1_crawls import get_crawl
+        from archivebox.api.v1_crawls import get_crawl
         response = response or get_crawl(request, abid)
     except Exception:
         pass

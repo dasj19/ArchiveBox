@@ -19,7 +19,7 @@ from archivebox.misc.paginators import AccelleratedPaginator
 from archivebox.base_models.admin import ABIDModelAdmin
 
 
-from core.models import ArchiveResult, Snapshot
+from archivebox.core.models import ArchiveResult, Snapshot
 
 
 

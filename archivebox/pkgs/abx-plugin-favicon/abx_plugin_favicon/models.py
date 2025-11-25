@@ -1,6 +1,6 @@
 # from django.db import models
 
-# from core.models import ArchiveResult
+# from archivebox.core.models import ArchiveResult
 
 # class FaviconResultManager(models.Manager):
 #     def get_queryset(self):

@@ -5,7 +5,7 @@ This file provides the Django ABIDField and ABIDModel base model to inherit from
 import io
 import csv
 import json
-from typing import Any, Dict, Union, List, Set, cast, ClassVar, Iterable
+from typing import Any, Dict, Union, List, Set, cast, ClassVar, Iterable, Self
 
 import json
 from uuid import uuid4
@@ -29,7 +29,12 @@ from django.conf import settings
 
 from django_stubs_ext.db.models import TypedModelMeta
 
-from tags.models import KVTag, ModelWithKVTags
+# Avoid importing `tags.models` here to prevent a circular import:
+# `tags.models` imports classes from `base_models.models` while some
+# models in this module previously imported `ModelWithKVTags` from
+# `tags.models`. To break that cycle, do not import `tags.models`
+# at module import time. Individual models that need `ModelWithKVTags`
+# should import it directly from `tags.models` where appropriate.
 
 from archivebox import DATA_DIR
 from archivebox.index.json import to_json
@@ -131,8 +136,11 @@ class ModelWithReadOnlyFields(models.Model):
         super().save(*args, **kwargs)
 
 
-class ModelWithUUID(ModelWithReadOnlyFields, ModelWithKVTags):
-    
+class ModelWithUUID(ModelWithReadOnlyFields):
+
+    # Note: `ModelWithKVTags` is intentionally not included here to avoid
+    # circular imports with `tags.models`. Models that require key/value
+    # tagging should mix in `ModelWithKVTags` explicitly where needed.
     read_only_fields = ('id', 'created_at')
     
     id = models.UUIDField(primary_key=True, default=None, null=False, editable=False, unique=True, verbose_name='ID')
@@ -149,7 +157,7 @@ class ModelWithUUID(ModelWithReadOnlyFields, ModelWithKVTags):
         'modified_at',
         'created_at',
         'created_by_id',
-        'status',
+        # 'status',
         'retry_at',
         'notes',
     )
@@ -185,6 +193,8 @@ class ModelWithUUID(ModelWithReadOnlyFields, ModelWithKVTags):
 
 
 class ModelWithSerializers(ModelWithUUID):
+    class Meta:
+        abstract = True
     
     def as_csv_row(self, keys: Iterable[str]=(), separator: str=',') -> str:
         """Get the object's properties as a csv string"""
@@ -249,11 +259,10 @@ class ModelWithSerializers(ModelWithUUID):
         '''
 
 
-class ABIDModel(ModelWithReadOnlyFields, ModelWithUUID):
+class ABIDModel(ModelWithUUID):
     """
     Abstract Base Model for other models to depend on. Provides ArchiveBox ID (ABID) interface and other helper methods.
-    """
-    abid_prefix: str = DEFAULT_ABID_PREFIX            # e.g. 'tag_'
+    """        # e.g. 'tag_'
     abid_ts_src = 'self.created_at'                  # e.g. 'self.created_at'
     abid_uri_src = 'None'                            # e.g. 'self.uri'                (MUST BE SET)
     abid_subtype_src = 'self.__class__.__name__'     # e.g. 'self.extractor'
@@ -266,7 +275,7 @@ class ABIDModel(ModelWithReadOnlyFields, ModelWithUUID):
     read_only_fields = ('id', 'abid', 'created_at', 'created_by')
     
     id = models.UUIDField(primary_key=True, default=None, null=False, editable=False, unique=True, verbose_name='ID')
-    abid = ABIDField(prefix=abid_prefix)
+    abid = ABIDField(prefix=DEFAULT_ABID_PREFIX)
     created_at = AutoDateTimeField(default=None, null=False, db_index=True)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=None, null=False, db_index=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -278,7 +287,7 @@ class ABIDModel(ModelWithReadOnlyFields, ModelWithUUID):
 
     @admin.display(description='Summary')
     def __str__(self) -> str:
-        return f'[{self.abid or (self.abid_prefix + "NEW")}] {self.__class__.__name__} {eval(self.abid_uri_src)}'
+        return f'[{self.abid or (DEFAULT_ABID_PREFIX + "NEW")}] {self.__class__.__name__} {eval(self.abid_uri_src)}'
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Overriden __init__ method ensures we have a stable creation timestamp that fields can use within initialization code pre-saving to DB."""
@@ -544,31 +553,31 @@ class ModelWithNotes(models.Model):
 
 
 class ModelWithHealthStats(models.Model):
-    num_uses_failed = models.PositiveIntegerField(default=0)
-    num_uses_succeeded = models.PositiveIntegerField(default=0)
+    # num_uses_failed = models.PositiveIntegerField(default=0)
+    # num_uses_succeeded = models.PositiveIntegerField(default=0)
     
     class Meta:
         abstract = True
     
-    def increment_num_uses_failed(self) -> None:
-        self.num_uses_failed += 1
-        self.save()
+    # def increment_num_uses_failed(self) -> None:
+    #     self.num_uses_failed += 1
+    #     self.save()
 
-    def increment_num_uses_succeeded(self) -> None:
-        self.num_uses_succeeded += 1
-        self.save()
+    # def increment_num_uses_succeeded(self) -> None:
+    #     self.num_uses_succeeded += 1
+    #     self.save()
         
-    def reset_health_counts(self) -> None:
-        # move all the failures to successes when resetting so we dont lose track of the total count
-        self.num_uses_succeeded = self.num_uses_failed + self.num_uses_succeeded
-        self.num_uses_failed = 0
-        self.save()
+    # def reset_health_counts(self) -> None:
+    #     # move all the failures to successes when resetting so we dont lose track of the total count
+    #     self.num_uses_succeeded = self.num_uses_failed + self.num_uses_succeeded
+    #     self.num_uses_failed = 0
+    #     self.save()
         
-    @property
-    def health(self) -> int:
-        total_uses = max((self.num_uses_failed + self.num_uses_succeeded, 1))
-        success_pct = (self.num_uses_succeeded / total_uses) * 100
-        return round(success_pct)
+    # @property
+    # def health(self) -> int:
+    #     total_uses = max((self.num_uses_failed + self.num_uses_succeeded, 1))
+    #     success_pct = (self.num_uses_succeeded / total_uses) * 100
+    #     return round(success_pct)
 
 
 class ModelWithConfig(models.Model):
@@ -594,7 +603,7 @@ class ModelWithConfig(models.Model):
     #     }
 
 
-class ModelWithOutputDir(ModelsWithSerializers, ModelWithUUID, ABIDModel):
+class ModelWithOutputDir(ModelWithSerializers, ABIDModel):
     """
     Base Model that adds an output_dir property to any ABIDModel.
     
@@ -710,7 +719,7 @@ class ModelWithOutputDir(ModelsWithSerializers, ModelWithUUID, ABIDModel):
             'created_by_id': self.created_by_id,
             'created_at': self.created_at,
             'modified_at': self.modified_at,
-            'status': getattr(self, 'status', None),
+            # 'status': getattr(self, 'status', None),
             'retry_at': getattr(self, 'retry_at', None),
             'notes': getattr(self, 'notes', None),
             **{key: getattr(self, key) for key in keys},
@@ -728,7 +737,7 @@ class ModelWithOutputDir(ModelsWithSerializers, ModelWithUUID, ABIDModel):
 def find_all_abid_prefixes() -> Dict[str, type[models.Model]]:
     """
     Return the mapping of all ABID prefixes to their models.
-    e.g. {'tag_': core.models.Tag, 'snp_': core.models.Snapshot, ...}
+    e.g. {'tag_': archivebox.core.models.Tag, 'snp_': archivebox.core.models.Snapshot, ...}
     """
     import django.apps
     prefix_map = {}
@@ -870,6 +879,20 @@ def find_obj_from_abid(abid: ABID, model=None, fuzzy=False) -> Any:
         return match_by_rand
 
     raise model.DoesNotExist
+
+
+# Backwards-compatibility shim: some modules import `ModelWithKVTags` and
+# `KVTag` from `base_models.models`. To avoid breaking that public API while
+# keeping `tags.models` free to import base classes from here, expose those
+# symbols lazily via module-level `__getattr__` so the real definitions are
+# imported from `archivebox.tags.models` only when requested (avoids import
+# cycles at module import time).
+def __getattr__(name: str):
+    if name in ("ModelWithKVTags", "KVTag"):
+        from archivebox.tags.models import ModelWithKVTags, KVTag  # local import
+        return ModelWithKVTags if (name == "ModelWithKVTags") else KVTag
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
 
 
 

@@ -326,7 +326,7 @@ def log_archiving_paused(num_links: int, idx: int, timestamp: str):
 
 def log_archiving_finished(num_links: int):
 
-    from core.models import Snapshot
+    from archivebox.core.models import Snapshot
 
     end_ts = datetime.now(timezone.utc)
     _LAST_RUN_STATS.archiving_end_ts = end_ts

@@ -63,7 +63,7 @@ class BaseExtractor:
 
     # @abx.hookimpl
     # def extract(self, snapshot_id: str) -> Dict[str, Any]:
-    #     from core.models import Snapshot
+    #     from archivebox.core.models import Snapshot
     #     from archivebox import CONSTANTS
         
     #     snapshot = Snapshot.objects.get(id=snapshot_id)
@@ -199,7 +199,7 @@ class BaseExtractor:
         raise ValueError(f'Binary {self.binary} not found')
     
     def detect_installed_binary(self):
-        from machine.models import InstalledBinary
+        from archivebox.machine.models import InstalledBinary
         # hydrates binary from DB/cache if record of installed version is recent enough
         # otherwise it finds it from scratch by detecting installed version/abspath/sha256 on host
         return InstalledBinary.objects.get_from_db_or_cache(self.BINARY)
@@ -209,5 +209,5 @@ class BaseExtractor:
         return installed_binary.load_from_db()
     
     # def detect_network_interface(self):
-    #     from machine.models import NetworkInterface
+    #     from archivebox.machine.models import NetworkInterface
     #     return NetworkInterface.objects.current()

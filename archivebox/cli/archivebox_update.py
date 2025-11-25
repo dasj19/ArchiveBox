@@ -39,7 +39,7 @@ def update(filter_patterns: Iterable[str]=(),
     from archivebox.config.django import setup_django
     setup_django()
     
-    from workers.orchestrator import Orchestrator
+    from archivebox.workers.orchestrator import Orchestrator
     orchestrator = Orchestrator(exit_on_idle=False)
     orchestrator.start()
 
@@ -101,7 +101,7 @@ if __name__ == '__main__':
 #            out_dir: Path=DATA_DIR) -> List[Link]:
 #     """Import any new links from subscriptions and retry any previously failed/skipped links"""
 
-#     from core.models import ArchiveResult
+#     from archivebox.core.models import ArchiveResult
 #     from .search import index_links
 #     # from workers.supervisord_util import start_cli_workers
     

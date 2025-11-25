@@ -12,17 +12,17 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 
 from archivebox.config import CONSTANTS
-from base_models.models import ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID, ModelWithKVTags, ModelWithOutputDir, ModelWithConfig, ModelWithNotes, ABIDModel, ABIDField, AutoDateTimeField, ModelWithHealthStats, get_or_create_system_user_pk
-from workers.models import ModelWithStateMachine
-from tags.models import KVTag, GenericRelation
+from archivebox.base_models.models import ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID, ModelWithKVTags, ModelWithOutputDir, ModelWithConfig, ModelWithNotes, ABIDModel, ABIDField, AutoDateTimeField, ModelWithHealthStats, get_or_create_system_user_pk
+from archivebox.workers.models import ModelWithStateMachine
+from archivebox.tags.models import KVTag, GenericRelation
 
 if TYPE_CHECKING:
-    from core.models import Snapshot, ArchiveResult
+    from archivebox.core.models import Snapshot, ArchiveResult
 
 
 
 
-class Seed(ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID, ModelWithKVTags, ABIDModel, ModelWithOutputDir, ModelWithConfig, ModelWithNotes, ModelWithHealthStats):
+class Seed(ModelWithOutputDir, ModelWithKVTags, ModelWithConfig, ModelWithNotes, ModelWithHealthStats):
     """
     A fountain that produces URLs (+metadata) each time it's queried e.g.
         - file:///data/sources/2024-01-02_11-57-51__cli_add.txt
@@ -45,7 +45,7 @@ class Seed(ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID, ModelWi
     
     ### ModelWithReadOnlyFields:
     read_only_fields = ('id', 'abid', 'created_at', 'created_by', 'uri')
-    
+    abid_prefix = 'sed_'
     ### Immutable fields
     id = models.UUIDField(primary_key=True, default=None, null=False, editable=False, unique=True, verbose_name='ID')
     abid = ABIDField(prefix=abid_prefix)
@@ -73,7 +73,6 @@ class Seed(ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID, ModelWi
         related_query_name="seed",
         content_type_field="obj_type",
         object_id_field="obj_id",
-        order_by=('name',),
     )
     
     ### ABIDModel:
@@ -144,12 +143,12 @@ class Seed(ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID, ModelWi
 
     @property
     def scheduled_crawl_set(self) -> QuerySet['CrawlSchedule']:
-        from crawls.models import CrawlSchedule
+        from archivebox.crawls.models import CrawlSchedule
         return CrawlSchedule.objects.filter(template__seed_id=self.pk)
 
     @property
     def snapshot_set(self) -> QuerySet['Snapshot']:
-        from core.models import Snapshot
+        from archivebox.core.models import Snapshot
         
         crawl_ids = self.crawl_set.values_list('pk', flat=True)
         return Snapshot.objects.filter(crawl_id__in=crawl_ids)
@@ -157,7 +156,7 @@ class Seed(ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID, ModelWi
 
 
 
-class CrawlSchedule(ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID, ModelWithKVTags, ABIDModel, ModelWithNotes, ModelWithHealthStats):
+class CrawlSchedule(ABIDModel, ModelWithKVTags, ModelWithNotes, ModelWithHealthStats):
     """
     A record for a job that should run repeatedly on a given schedule.
     
@@ -171,7 +170,7 @@ class CrawlSchedule(ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID
     abid_subtype_src = 'self.template.persona'
     abid_rand_src = 'self.id'
     abid_drift_allowed = True
-    abid = ABIDField(prefix=abid_prefix)
+    abid = ABIDField(prefix='cws_')
     
     ### ModelWithReadOnlyFields:
     read_only_fields = ('id', 'abid', 'created_at', 'created_by', 'template_id')
@@ -192,10 +191,9 @@ class CrawlSchedule(ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID
     ### ModelWithKVTags:
     tag_set = GenericRelation(
         KVTag,
-        related_query_name="crawlschedule",
+        related_query_name="crawl_schedule",
         content_type_field="obj_type",
         object_id_field="obj_id",
-        order_by=('name',),
     )
     
     ### Managers:
@@ -231,7 +229,7 @@ class CrawlSchedule(ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID
         
     @property
     def snapshot_set(self) -> QuerySet['Snapshot']:
-        from core.models import Snapshot
+        from archivebox.core.models import Snapshot
         
         crawl_ids = self.crawl_set.values_list('pk', flat=True)
         return Snapshot.objects.filter(crawl_id__in=crawl_ids)
@@ -274,7 +272,7 @@ class CrawlQuerySet(models.QuerySet):
 
 
 
-class Crawl(ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID, ModelWithKVTags, ABIDModel, ModelWithOutputDir, ModelWithConfig, ModelWithHealthStats, ModelWithStateMachine):
+class Crawl(ModelWithOutputDir, ModelWithKVTags, ModelWithConfig, ModelWithHealthStats, ModelWithStateMachine):
     """
     A single session of URLs to archive starting from a given Seed and expanding outwards. An "archiving session" so to speak.
 
@@ -287,7 +285,7 @@ class Crawl(ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID, ModelW
     
     ### ModelWithReadOnlyFields:
     read_only_fields = ('id', 'abid', 'created_at', 'created_by', 'seed')
-    
+    abid_prefix = "cws_"
     ### Immutable fields:
     id = models.UUIDField(primary_key=True, default=None, null=False, editable=False, unique=True, verbose_name='ID')
     abid = ABIDField(prefix=abid_prefix)
@@ -312,7 +310,6 @@ class Crawl(ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID, ModelW
         related_query_name="crawl",
         content_type_field="obj_type",
         object_id_field="obj_id",
-        order_by=('name',),
     )
     
     ### ModelWithStateMachine:
@@ -402,7 +399,7 @@ class Crawl(ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID, ModelW
         return self.snapshot_set.filter(retry_at__isnull=False)
     
     def pending_archiveresults(self) -> QuerySet['ArchiveResult']:
-        from core.models import ArchiveResult
+        from archivebox.core.models import ArchiveResult
         
         snapshot_ids = self.snapshot_set.values_list('id', flat=True)
         pending_archiveresults = ArchiveResult.objects.filter(snapshot_id__in=snapshot_ids, retry_at__isnull=False)
@@ -410,7 +407,7 @@ class Crawl(ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID, ModelW
     
     def create_root_snapshot(self) -> 'Snapshot':
         print(f'Crawl[{self.ABID}].create_root_snapshot()')
-        from core.models import Snapshot
+        from archivebox.core.models import Snapshot
         
         try:
             return Snapshot.objects.get(crawl=self, url=self.seed.uri)
@@ -431,7 +428,7 @@ class Crawl(ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID, ModelW
         return root_snapshot
 
 
-class Outlink(ModelWithReadOnlyFields, ModelWithSerializers, ModelWithUUID, ModelWithKVTags):
+class Outlink(ModelWithSerializers, ModelWithKVTags):
     """A record of a link found on a page, pointing to another page."""
     read_only_fields = ('id', 'src', 'dst', 'crawl', 'via')
     

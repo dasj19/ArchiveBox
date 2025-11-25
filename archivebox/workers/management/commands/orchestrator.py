@@ -2,7 +2,7 @@
 
 from django.core.management.base import BaseCommand
 
-from workers.orchestrator import ArchivingOrchestrator
+from archivebox.workers.orchestrator import ArchivingOrchestrator
 
 
 class Command(BaseCommand):

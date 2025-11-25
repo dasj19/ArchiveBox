@@ -30,9 +30,9 @@ from archivebox.misc.serve_static import serve_static_with_byterange_support
 from archivebox.misc.logging_util import printable_filesize
 from archivebox.search import query_search_index
 
-from core.models import Snapshot
-from core.forms import AddLinkForm
-from crawls.models import Seed, Crawl
+from archivebox.core.models import Snapshot
+from archivebox.core.forms import AddLinkForm
+from archivebox.crawls.models import Seed, Crawl
 
 
 

@@ -47,6 +47,8 @@ from .version import detect_installed_version
 
 
 class ConstantsDict(Mapping):
+    # Add _keyattr_enabled if necessary
+    _keyattr_enabled: bool              = True
     PACKAGE_DIR: Path                   = PACKAGE_DIR
     DATA_DIR: Path                      = DATA_DIR
     ARCHIVE_DIR: Path                   = ARCHIVE_DIR
@@ -210,7 +212,10 @@ class ConstantsDict(Mapping):
     @classmethod
     def __getitem__(cls, key: str):
         # so it behaves like a dict[key] == dict.key or object attr
-        return getattr(cls, key)
+        # Only expose uppercase non-underscore attributes as keys.
+        if isinstance(key, str) and key.isupper() and not key.startswith('_') and hasattr(cls, key):
+            return getattr(cls, key)
+        raise KeyError(key)
     
     @classmethod
     def __benedict__(cls):
@@ -224,6 +229,67 @@ class ConstantsDict(Mapping):
     @classmethod
     def __iter__(cls):
         return iter(cls.__benedict__())
+
+    # Instance-level mapping protocol methods (delegate to class-level
+    # implementations). benedict and other callers may call these on the
+    # instance, so provide safe behavior that only exposes uppercase keys.
+    def __contains__(self, key: object) -> bool:
+        return isinstance(key, str) and key.isupper() and not key.startswith('_') and hasattr(self.__class__, key)
+
+    def __getitem__(self, key: str):
+        if isinstance(key, str) and key.isupper() and not key.startswith('_') and hasattr(self.__class__, key):
+            return getattr(self.__class__, key)
+        raise KeyError(key)
+
+    def __iter__(self):
+        return iter(self.__class__.__benedict__())
+
+    def __len__(self):
+        return len(self.__class__.__benedict__())
+
+    @classmethod
+    def __setitem__(cls, key: str, value) -> None:
+        # For backward-compatibility, forward assignments to the mutable
+        # `CONSTANTS_CONFIG` (a benedict/dict-like) and emit a warning so
+        # callers know they should use that instead. This prevents runtime
+        # crashes from existing code that mutates CONSTANTS while keeping
+        # the canonical source of truth immutable.
+        import warnings
+        module_globals = globals()
+        if 'CONSTANTS_CONFIG' in module_globals:
+            warnings.warn(
+                "Assigning to `CONSTANTS` is deprecated — updating `CONSTANTS_CONFIG` instead.",
+                DeprecationWarning,
+            )
+            module_globals['CONSTANTS_CONFIG'][key] = value
+            return
+        raise TypeError("'ConstantsDict' object does not support item assignment. "
+                        "Constants are read-only — use `CONSTANTS_CONFIG` (a dict-like) "
+                        "if you need to modify values at runtime.")
+
+    @classmethod
+    def __delitem__(cls, key: str) -> None:
+        import warnings
+        module_globals = globals()
+        if 'CONSTANTS_CONFIG' in module_globals:
+            warnings.warn(
+                "Deleting from `CONSTANTS` is deprecated — deleting from `CONSTANTS_CONFIG` instead.",
+                DeprecationWarning,
+            )
+            try:
+                del module_globals['CONSTANTS_CONFIG'][key]
+                return
+            except KeyError:
+                raise KeyError(key)
+        raise TypeError("'ConstantsDict' object does not support item deletion. "
+                        "Constants are read-only — use `CONSTANTS_CONFIG` if you need a mutable copy.")
+
+    # Instance-level setters/deleters to satisfy mapping protocol callers
+    def __setitem__(self, key: str, value) -> None:
+        return self.__class__.__setitem__(key, value)
+
+    def __delitem__(self, key: str) -> None:
+        return self.__class__.__delitem__(key)
 
 CONSTANTS = ConstantsDict()
 CONSTANTS_CONFIG = CONSTANTS.__benedict__()

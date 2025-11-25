@@ -1,11 +1,18 @@
 __package__ = 'archivebox.core'
 __order__ = 100
 import abx
+import sys
+
+# Provide a legacy top-level alias so imports like `import core.models`
+# resolve to the same module object as `archivebox.core.models` and
+# avoid registering models twice under different module names.
+if 'core' not in sys.modules:
+    sys.modules['core'] = sys.modules.get(__name__)
 
 @abx.hookimpl
 def register_admin(admin_site):
     """Register the core.models views (Snapshot, ArchiveResult, Tag, etc.) with the admin site"""
-    from core.admin import register_admin
+    from archivebox.core.admin import register_admin
     register_admin(admin_site)
 
 

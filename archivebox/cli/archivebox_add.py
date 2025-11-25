@@ -20,7 +20,7 @@ from archivebox.parsers import PARSERS
 
 
 if TYPE_CHECKING:
-    from core.models import Snapshot
+    from archivebox.core.models import Snapshot
 
 
 ORCHESTRATOR = None
@@ -46,8 +46,8 @@ def add(urls: str | list[str],
     assert depth in (0, 1), 'Depth must be 0 or 1 (depth >1 is not supported yet)'
     
     # import models once django is set up
-    from crawls.models import Seed, Crawl
-    from workers.orchestrator import Orchestrator
+    from archivebox.crawls.models import Seed, Crawl
+    from archivebox.workers.orchestrator import Orchestrator
     from archivebox.base_models.models import get_or_create_system_user_pk
 
 
@@ -126,7 +126,7 @@ if __name__ == '__main__':
 #         out_dir: Path=DATA_DIR) -> List[Link]:
 #     """Add a new URL or list of URLs to your archive"""
 
-#     from core.models import Snapshot, Tag
+#     from archivebox.core.models import Snapshot, Tag
 #     # from workers.supervisord_util import start_cli_workers, tail_worker_logs
 #     # from workers.tasks import bg_archive_link
     

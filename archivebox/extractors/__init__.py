@@ -98,7 +98,7 @@ def archive_link(link: Link, overwrite: bool=False, methods: Optional[Iterable[s
     from ..search import write_search_index
 
     # TODO: Remove when the input is changed to be a snapshot. Suboptimal approach.
-    from core.models import Snapshot, ArchiveResult
+    from archivebox.core.models import Snapshot, ArchiveResult
     try:
         snapshot = Snapshot.objects.get(url=link.url) # TODO: This will be unnecessary once everything is a snapshot
     except Snapshot.DoesNotExist:

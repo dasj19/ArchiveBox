@@ -15,4 +15,4 @@ ASCII_LOGO_MINI = r"""
  /_/   \_\_|  \___|_| |_|_| \_/ \___|____/ \___/_/\_\
 """
 
-main(args=sys.argv[1:], stdin=sys.stdin)
+main(args=sys.argv[1:])

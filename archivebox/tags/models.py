@@ -18,7 +18,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericRelation
 
 
-from base_models.models import ABIDModel, ABIDField, AutoDateTimeField, get_or_create_system_user_pk
+from base_models.models import ABIDModel, ABIDField, AutoDateTimeField, get_or_create_system_user_pk, ModelWithReadOnlyFields
 
 FORBIDDEN_TAG_CHARS = ('=', '\n', '\t', '\r', ',', '\'', '"', '\\')
 
@@ -139,7 +139,7 @@ class KVTag(ModelWithReadOnlyFields):
     #                  enforced by ModelWithReadOnlyFields
     read_only_fields = ('id', 'created_at', 'name', 'value', 'obj_type', 'obj_id')
     #############################################################################
-    
+
     id = models.UUIDField(primary_key=True, default=None, null=False, editable=False, unique=True, verbose_name='ID')
     created_at = AutoDateTimeField(default=None, null=False, db_index=True)
 
@@ -153,6 +153,7 @@ class KVTag(ModelWithReadOnlyFields):
     objects: KVTagManager = KVTagManager.from_queryset(KVTagQuerySet)()
 
     class Meta:
+        abstract = True
         db_table = 'core_KVTags'
         unique_together = [('obj_id', 'name')]
     
@@ -256,7 +257,6 @@ class ModelWithKVTags(ModelWithReadOnlyFields):
         # related_query_name="snapshot",       set this in subclasses, allows queries like KVTag.objects.filter(snapshot__url='https://example.com')
         content_type_field="obj_type",
         object_id_field="obj_id",
-        order_by=('name',),
     )
     kvtag_set = tag_set
     

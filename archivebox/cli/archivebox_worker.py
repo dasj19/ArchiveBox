@@ -16,7 +16,7 @@ import rich_click as click
 def main(worker_type: str, wait_for_first_event: bool, exit_on_idle: bool):
     """Start an ArchiveBox worker process of the given type"""
     
-    from workers.worker import get_worker_type
+    from archivebox.workers.worker import get_worker_type
     
     # allow piping in events to process from stdin
     # if not sys.stdin.isatty():

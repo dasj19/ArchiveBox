@@ -51,7 +51,7 @@ class Machine(ABIDModel, ModelWithHealthStats):
     read_only_fields = ('id', 'abid', 'created_at', 'guid', 'hw_in_docker', 'hw_in_vm', 'hw_manufacturer', 'hw_product', 'hw_uuid', 'os_arch', 'os_family')
 
     id = models.UUIDField(primary_key=True, default=None, null=False, editable=False, unique=True, verbose_name='ID')
-    abid = ABIDField(prefix=abid_prefix)
+    abid = ABIDField(prefix='mcn_')
 
     created_at = AutoDateTimeField(default=None, null=False, db_index=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -132,7 +132,7 @@ class NetworkInterface(ABIDModel, ModelWithHealthStats):
     read_only_fields = ('id', 'abid', 'created_at', 'machine', 'mac_address', 'ip_public', 'ip_local', 'dns_server')
     
     id = models.UUIDField(primary_key=True, default=None, null=False, editable=False, unique=True, verbose_name='ID')
-    abid = ABIDField(prefix=abid_prefix)
+    abid = ABIDField(prefix='net_')
 
     created_at = AutoDateTimeField(default=None, null=False, db_index=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -268,7 +268,7 @@ class InstalledBinary(ABIDModel, ModelWithHealthStats):
     read_only_fields = ('id', 'abid', 'created_at', 'machine', 'name', 'binprovider', 'abspath', 'version', 'sha256')
     
     id = models.UUIDField(primary_key=True, default=None, null=False, editable=False, unique=True, verbose_name='ID')
-    abid = ABIDField(prefix=abid_prefix)
+    abid = ABIDField(prefix='bin_')
 
     created_at = AutoDateTimeField(default=None, null=False, db_index=True)
     modified_at = models.DateTimeField(auto_now=True)
@@ -413,7 +413,7 @@ class Process(ABIDModel):
     read_only_fields = ('id', 'abid', 'created_at', 'cmd', 'cwd', 'actor_type', 'timeout')
     
     id = models.UUIDField(primary_key=True, default=None, null=False, editable=False, unique=True, verbose_name='ID')
-    abid = ABIDField(prefix=abid_prefix)
+    abid = ABIDField(prefix='pid_')
     
     # immutable state
     cmd = models.JSONField(default=list)                             # shell argv
@@ -438,8 +438,8 @@ class Process(ABIDModel):
     # optional mutable state that can be used to trace what the process is doing
     # active_event = models.ForeignKey('Event', null=True, on_delete=models.SET_NULL)
     
-    emitted_events: models.RelatedManager['Event']
-    claimed_events: models.RelatedManager['Event']
+    # emitted_events and claimed_events are reverse relations created by Django at runtime
+    # (GenericRelations from Event model)
     
     objects: ProcessManager = ProcessManager.from_queryset(ProcessQuerySet)()
 

@@ -15,4 +15,34 @@ class Migration(migrations.Migration):
             name='downloaded_at',
             field=models.DateTimeField(blank=True, db_index=True, default=None, editable=False, null=True),
         ),
+        migrations.AddField(
+            model_name='snapshot',
+            name='status',
+            field=models.CharField(choices=[('pending', 'Pending'), ('in_progress', 'In Progress'), ('completed', 'Completed'), ('failed', 'Failed')], default='pending', max_length=20, db_index=True),
+        ),
+        migrations.AddField(
+            model_name='snapshot',
+            name='crawl_id',
+            field=models.UUIDField(blank=True, db_index=True, default=None, null=True),
+        ),
+        migrations.AddField(
+            model_name='snapshot',
+            name='retry_at',
+            field=models.DateTimeField(blank=True, db_index=True, default=None, editable=False, null=True),
+        ),
+        migrations.AddField(
+            model_name='snapshot',
+            name='config',
+            field=models.JSONField(blank=True, default=dict),
+        ),
+        migrations.AddField(
+            model_name='snapshot',
+            name='notes',
+            field=models.TextField(blank=True, default=''),
+        ),
+        migrations.AddField(
+            model_name='snapshot',
+            name='output_dir',
+            field=models.TextField(blank=True, default=''),
+        ),
     ]

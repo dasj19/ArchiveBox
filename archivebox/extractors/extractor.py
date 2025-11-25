@@ -11,7 +11,7 @@ from django.utils import timezone
 
 from archivebox.misc.hashing import get_dir_info
 
-from core.models import ArchiveResult
+from archivebox.core.models import ArchiveResult
 
 import abx
 import archivebox

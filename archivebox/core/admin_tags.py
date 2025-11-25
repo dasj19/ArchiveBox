@@ -8,7 +8,7 @@ import abx
 from archivebox.misc.paginators import AccelleratedPaginator
 from archivebox.base_models.admin import ABIDModelAdmin
 
-from core.models import Tag
+from archivebox.core.models import Tag
 
 
 class TagInline(admin.TabularInline):

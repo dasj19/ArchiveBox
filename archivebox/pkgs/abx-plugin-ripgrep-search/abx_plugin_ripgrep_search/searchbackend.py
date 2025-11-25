@@ -29,7 +29,7 @@ class RipgrepSearchBackend(BaseSearchBackend):
 
     @staticmethod
     def search(text: str) -> List[str]:
-        from core.models import Snapshot
+        from archivebox.core.models import Snapshot
         
         ripgrep_binary = RIPGREP_BINARY.load()
         if not ripgrep_binary.version:

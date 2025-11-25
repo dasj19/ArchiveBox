@@ -145,7 +145,7 @@ def fix_duplicate_links(sorted_links: Iterable[Link]) -> Iterable[Link]:
     """
     ensures that all non-duplicate links have monotonically increasing timestamps
     """
-    # from core.models import Snapshot
+    # from archivebox.core.models import Snapshot
 
     unique_urls: OrderedDict[str, Link] = OrderedDict()
 
@@ -238,7 +238,7 @@ def write_main_index(links: List[Link], out_dir: Path=DATA_DIR, created_by_id: i
 @enforce_types
 def load_main_index(out_dir: Path | str=DATA_DIR, warn: bool=True) -> List[Link]:
     """parse and load existing index with any new links from import_path merged in"""
-    from core.models import Snapshot
+    from archivebox.core.models import Snapshot
     try:
         return Snapshot.objects.all().only('id')
 
@@ -378,7 +378,7 @@ def search_filter(snapshots: QuerySet, filter_patterns: List[str], filter_type: 
                 color='red',
             )
         raise SystemExit(2)
-    from core.models import Snapshot
+    from archivebox.core.models import Snapshot
 
     qsearch = Snapshot.objects.none()
     for pattern in filter_patterns:

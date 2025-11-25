@@ -2,8 +2,8 @@ __package__ = 'abx_plugin_favicon'
 
 from typing import ClassVar
 
-from core.actors import ActorType
-from core.statemachines import ArchiveResultMachine
+from archivebox.core.actors import ActorType
+from archivebox.core.statemachines import ArchiveResultMachine
 
 from statemachine import State
 

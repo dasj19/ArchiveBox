@@ -18,7 +18,7 @@ from .schema import Link
 
 @enforce_types
 def parse_sql_main_index(out_dir: Path=DATA_DIR) -> Iterator[Link]:
-    from core.models import Snapshot
+    from archivebox.core.models import Snapshot
 
     return (
         Link.from_json(page.as_json(*Snapshot.keys))
@@ -34,7 +34,7 @@ def remove_from_sql_main_index(snapshots: QuerySet, atomic: bool=False, out_dir:
 
 @enforce_types
 def write_link_to_sql_index(link: Link, created_by_id: int | None=None):
-    from core.models import Snapshot, ArchiveResult
+    from archivebox.core.models import Snapshot, ArchiveResult
     from archivebox.base_models.models import get_or_create_system_user_pk
 
     info = {k: v for k, v in link._asdict().items() if k in Snapshot.keys}
@@ -102,7 +102,7 @@ def write_sql_main_index(links: List[Link], out_dir: Path=DATA_DIR, created_by_i
 
 @enforce_types
 def write_sql_link_details(link: Link, out_dir: Path=DATA_DIR, created_by_id: int | None=None) -> None:
-    from core.models import Snapshot
+    from archivebox.core.models import Snapshot
 
     # with transaction.atomic():
     #     try:

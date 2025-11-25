@@ -17,34 +17,34 @@ class Migration(migrations.Migration):
                 "verbose_name_plural": "Installed Binaries",
             },
         ),
-        migrations.AddField(
-            model_name="installedbinary",
-            name="num_uses_failed",
-            field=models.PositiveIntegerField(default=0),
-        ),
-        migrations.AddField(
-            model_name="installedbinary",
-            name="num_uses_succeeded",
-            field=models.PositiveIntegerField(default=0),
-        ),
-        migrations.AddField(
-            model_name="machine",
-            name="num_uses_failed",
-            field=models.PositiveIntegerField(default=0),
-        ),
-        migrations.AddField(
-            model_name="machine",
-            name="num_uses_succeeded",
-            field=models.PositiveIntegerField(default=0),
-        ),
-        migrations.AddField(
-            model_name="networkinterface",
-            name="num_uses_failed",
-            field=models.PositiveIntegerField(default=0),
-        ),
-        migrations.AddField(
-            model_name="networkinterface",
-            name="num_uses_succeeded",
-            field=models.PositiveIntegerField(default=0),
-        ),
+        # migrations.AddField(
+        #     model_name="installedbinary",
+        #     name="num_uses_failed",
+        #     field=models.PositiveIntegerField(default=0),
+        # ),
+        # migrations.AddField(
+        #     model_name="installedbinary",
+        #     name="num_uses_succeeded",
+        #     field=models.PositiveIntegerField(default=0),
+        # ),
+        # migrations.AddField(
+        #     model_name="machine",
+        #     name="num_uses_failed",
+        #     field=models.PositiveIntegerField(default=0),
+        # ),
+        # migrations.AddField(
+        #     model_name="machine",
+        #     name="num_uses_succeeded",
+        #     field=models.PositiveIntegerField(default=0),
+        # ),
+        # migrations.AddField(
+        #     model_name="networkinterface",
+        #     name="num_uses_failed",
+        #     field=models.PositiveIntegerField(default=0),
+        # ),
+        # migrations.AddField(
+        #     model_name="networkinterface",
+        #     name="num_uses_succeeded",
+        #     field=models.PositiveIntegerField(default=0),
+        # ),
     ]
