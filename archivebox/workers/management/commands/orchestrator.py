@@ -2,7 +2,7 @@
 
 from django.core.management.base import BaseCommand
 
-from archivebox.workers.orchestrator import ArchivingOrchestrator
+from archivebox.workers.orchestrator import Orchestrator
 
 
 class Command(BaseCommand):
@@ -14,5 +14,5 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **kwargs):
-        orchestrator = ArchivingOrchestrator()
+        orchestrator = Orchestrator()
         orchestrator.start()

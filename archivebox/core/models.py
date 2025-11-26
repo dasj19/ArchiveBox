@@ -57,7 +57,7 @@ class Tag(ModelWithSerializers, ABIDModel):
     
     Being phazed out in favor of archivebox.tags.models.ATag
     """
-
+    abid_prefix = 'tag_'
     abid_ts_src = 'self.created_at'
     abid_uri_src = 'self.slug'
     abid_subtype_src = '"03"'
@@ -646,6 +646,7 @@ class ArchiveResult(
     ModelWithOutputDir, ModelWithConfig, ModelWithNotes, ModelWithHealthStats, ModelWithStateMachine
 ):
     ### ABIDModel
+    abid_prefix = 'res_'
     abid_ts_src = 'self.snapshot.created_at'
     abid_uri_src = 'self.snapshot.url'
     abid_subtype_src = 'self.extractor'

@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'workers',                   # handles starting and managing background workers and processes (orchestrators and actors)
     'crawls',                    # handles Seed, Crawl, and CrawlSchedule models and management
     'personas',                  # handles Persona and session management
+    'archivebox.tags',                      # handles KVTag model for flexible key-value tagging on any model
     'archivebox.core',                      # core django model with Snapshot, ArchiveResult, etc.
     'archivebox.api',                       # Django-Ninja-based Rest API interfaces, config, APIToken model, etc.
 

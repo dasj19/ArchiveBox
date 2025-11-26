@@ -47,7 +47,7 @@ def db_task_with_parent(func):
 def bg_add(add_kwargs, task=None, parent_task_id=None):
     get_or_create_supervisord_process(daemonize=False)
     
-    from ..main import add
+    from archivebox.cli.archivebox_add import add
     
     if task and parent_task_id:
         TaskModel.objects.set_parent_task(main_task_id=parent_task_id, sub_task_id=task.id)

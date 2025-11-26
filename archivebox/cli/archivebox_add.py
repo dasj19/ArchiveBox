@@ -73,11 +73,35 @@ def add(urls: str | list[str],
     crawl = Crawl.from_seed(seed, max_depth=depth)
     
     # 4. start the Orchestrator & wait until it completes
-    #    ... orchestrator will create the root Snapshot, which creates pending ArchiveResults, which gets run by the ArchiveResultActors ...
-    # from crawls.actors import CrawlActor
-    # from core.actors import SnapshotActor, ArchiveResultActor
-
-    if not bg:
+    #    the orchestrator will create the root Snapshot, which creates pending ArchiveResults,
+    #    which get processed by the ArchiveResultActor workers in the background
+    if bg:
+        # Queue the processing asynchronously via django-huey background task
+        try:
+            from archivebox.workers.tasks import bg_add as bg_add_task
+            bg_add_task.schedule(
+                args=({
+                    "urls": urls if isinstance(urls, str) else '\n'.join(urls),
+                    "tag": tag,
+                    "depth": depth,
+                    "parser": parser,
+                    "extract": extract,
+                    "persona": persona,
+                    "overwrite": overwrite,
+                    "update": update,
+                    "index_only": index_only,
+                    "created_by_id": created_by_id,
+                },),
+                delay=0,  # start immediately
+            )
+            print(f'[+] Queued archiving task for {len(urls.split("://")) - 1 if isinstance(urls, str) else len(urls)} URLs in background')
+        except Exception as e:
+            print(f'[!] Warning: Failed to queue background task: {e}')
+            # Fall back to synchronous processing if queueing fails
+            orchestrator = Orchestrator(exit_on_idle=True, max_concurrent_actors=4)
+            orchestrator.start()
+    else:
+        # Run orchestrator synchronously and wait for completion
         orchestrator = Orchestrator(exit_on_idle=True, max_concurrent_actors=4)
         orchestrator.start()
     

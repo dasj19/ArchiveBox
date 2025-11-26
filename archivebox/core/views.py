@@ -469,8 +469,8 @@ class AddView(UserPassesTestMixin, FormView):
             "tag": tag,
             "depth": depth,
             "parser": parser,
-            "update_all": False,
-            "out_dir": DATA_DIR,
+            "update": False,
+            # "out_dir": DATA_DIR,
             "created_by_id": self.request.user.pk,
         }
         if extractors:
@@ -502,22 +502,27 @@ class AddView(UserPassesTestMixin, FormView):
         # 3. create a new Crawl pointing to the Seed
         crawl = Crawl.from_seed(seed, max_depth=depth)
         
-        # 4. start the Orchestrator & wait until it completes
-        #    ... orchestrator will create the root Snapshot, which creates pending ArchiveResults, which gets run by the ArchiveResultActors ...
-        # from crawls.actors import CrawlActor
-        # from core.actors import SnapshotActor, ArchiveResultActor
-    
+        # 4. start the Orchestrator & wait until it completes (asynchronously via background task)
+        #    the orchestrator will create the root Snapshot, which creates pending ArchiveResults,
+        #    which get processed by the ArchiveResultActor workers in the background
+        try:
+            from archivebox.workers.tasks import bg_add
+            # Queue the add task to be processed by the background COMMAND_WORKER via django-huey
+            # The worker will process the crawl asynchronously
+            bg_add.schedule(
+                args=(input_kwargs,),
+                delay=0,  # start immediately
+            )
+        except Exception as e:
+            print(f'[!] Warning: Failed to queue background task: {e}')
+            # If bg task fails, the crawl is still created and can be processed later
 
         rough_url_count = urls.count('://')
 
         messages.success(
             self.request,
-            mark_safe(f"Adding {rough_url_count} URLs in the background. (refresh in a minute start seeing results) {crawl.admin_change_url}"),
+            mark_safe(f"Adding {rough_url_count} URLs in the background. (refresh in a minute to start seeing results) <a href='{crawl.admin_change_url}'>{crawl.abid}</a>"),
         )
-        # if not bg:
-        #     from workers.orchestrator import Orchestrator
-        #     orchestrator = Orchestrator(exit_on_idle=True, max_concurrent_actors=4)
-        #     orchestrator.start()
 
         return redirect(crawl.admin_change_url)
 

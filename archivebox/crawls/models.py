@@ -301,7 +301,7 @@ class Crawl(ModelWithOutputDir, ModelWithKVTags, ModelWithConfig, ModelWithHealt
     
     ### ModelWithReadOnlyFields:
     read_only_fields = ('id', 'abid', 'created_at', 'created_by', 'seed')
-    abid_prefix = "cws_"
+    abid_prefix = "cwl_"
     ### Immutable fields:
     id = models.UUIDField(primary_key=True, default=None, null=False, editable=False, unique=True, verbose_name='ID')
     abid = ABIDField(prefix=abid_prefix)

@@ -26,14 +26,6 @@ CONFIG_FILE_NAME = "supervisord.conf"
 PID_FILE_NAME = "supervisord.pid"
 WORKERS_DIR_NAME = "workers"
 
-SCHEDULER_WORKER = {
-    "name": "worker_scheduler",
-    "command": "archivebox manage djangohuey --queue system_tasks -w 4 -k thread --disable-health-check --flush-locks",
-    "autostart": "true",
-    "autorestart": "true",
-    "stdout_logfile": "logs/worker_scheduler.log",
-    "redirect_stderr": "true",
-}
 COMMAND_WORKER = {
     "name": "worker_commands",
     "command": "archivebox manage djangohuey --queue commands -w 4 -k thread --no-periodic --disable-health-check",
@@ -393,7 +385,6 @@ def start_server_workers(host='0.0.0.0', port='8000', daemonize=False):
     supervisor = get_or_create_supervisord_process(daemonize=daemonize)
     
     bg_workers = [
-        SCHEDULER_WORKER,
         COMMAND_WORKER,
         ORCHESTRATOR_WORKER,
     ]
