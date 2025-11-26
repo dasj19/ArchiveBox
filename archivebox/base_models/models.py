@@ -105,7 +105,9 @@ class ModelWithReadOnlyFields(models.Model):
         
     def _fresh_from_db(self):
         try:
-            return self.objects.get(pk=self.pk)
+            # Use the class manager from the class, not via the instance
+            # (accessing managers via instances raises AttributeError in Django).
+            return self.__class__.objects.get(pk=self.pk)
         except self.__class__.DoesNotExist:
             return None
     
@@ -632,8 +634,19 @@ class ModelWithOutputDir(ModelWithSerializers, ABIDModel):
     @property
     def output_dir_parent(self) -> str:
         """Get the model type parent directory name that holds this object's data e.g. 'archiveresults'"""
-        parent_dir = getattr(self, 'output_dir_parent', f'{self._meta.model_name}s')
-        assert len(parent_dir) > 2, f'output_dir_parent must be a non-empty string, got: "{parent_dir}"'
+        # If the concrete model class defines `output_dir_parent` as a
+        # regular method (legacy pattern in some models), call that
+        # implementation directly from the class dict to avoid triggering
+        # this property again via `getattr` (which would recurse).
+        cls = self.__class__
+        cls_attr = cls.__dict__.get('output_dir_parent')
+        if callable(cls_attr):
+            parent_dir = cls_attr(self)
+        else:
+            parent_dir = f'{self._meta.model_name}s'
+
+        assert isinstance(parent_dir, str) and len(parent_dir) > 2, \
+            f'output_dir_parent must be a non-empty string, got: "{parent_dir}"'
         return parent_dir
     
     @property

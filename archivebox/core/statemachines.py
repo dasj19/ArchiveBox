@@ -112,14 +112,27 @@ class SnapshotMachine(StateMachine, strict_states=True):
 #     The primary actor for progressing Snapshot objects
 #     through their lifecycle using the SnapshotMachine.
 #     """
-#     Model = Snapshot
-#     StateMachineClass = SnapshotMachine
-    
-#     ACTIVE_STATE: ClassVar[State] = SnapshotMachine.started                    # 'started'
-    
-#     MAX_CONCURRENT_ACTORS: ClassVar[int] = 3
-#     MAX_TICK_TIME: ClassVar[int] = 10
-#     CLAIM_FROM_TOP_N: ClassVar[int] = MAX_CONCURRENT_ACTORS * 10
+class SnapshotWorker:
+    Model = Snapshot
+    StateMachineClass = SnapshotMachine
+
+    ACTIVE_STATE: ClassVar[State] = SnapshotMachine.started
+
+    @classmethod
+    def get_queue(cls):
+        return cls.Model.objects.none()
+
+    @classmethod
+    def get_running_actors(cls):
+        return []
+
+    @classmethod
+    def get_actors_to_spawn(cls, queue, existing_actors):
+        return []
+
+    @classmethod
+    def start(cls, mode='process', **kwargs):
+        return None
 
 
 
@@ -268,11 +281,24 @@ class ArchiveResultMachine(StateMachine, strict_states=True):
 #     The primary actor for progressing ArchiveResult objects
 #     through their lifecycle using the ArchiveResultMachine.
 #     """
-#     Model = ArchiveResult
-#     StateMachineClass = ArchiveResultMachine
-    
-#     ACTIVE_STATE: ClassVar[State] = ArchiveResultMachine.started                # 'started'
-    
-#     MAX_CONCURRENT_ACTORS: ClassVar[int] = 6
-#     MAX_TICK_TIME: ClassVar[int] = 60
-#     CLAIM_FROM_TOP_N: ClassVar[int] = MAX_CONCURRENT_ACTORS * 10
+class ArchiveResultWorker:
+    Model = ArchiveResult
+    StateMachineClass = ArchiveResultMachine
+
+    ACTIVE_STATE: ClassVar[State] = ArchiveResultMachine.started
+
+    @classmethod
+    def get_queue(cls):
+        return cls.Model.objects.none()
+
+    @classmethod
+    def get_running_actors(cls):
+        return []
+
+    @classmethod
+    def get_actors_to_spawn(cls, queue, existing_actors):
+        return []
+
+    @classmethod
+    def start(cls, mode='process', **kwargs):
+        return None

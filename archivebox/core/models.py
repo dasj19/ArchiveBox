@@ -259,7 +259,7 @@ class Snapshot(
     # self.update_for_workers() -> bool
     
     ### ModelWithStateMachine
-    state_machine_name = 'core.statemachines.SnapshotMachine'
+    state_machine_name = 'archivebox.core.statemachines.SnapshotMachine'
     state_field_name = 'status'
     retry_at_field_name = 'retry_at'
     active_state = StatusChoices.STARTED
@@ -662,7 +662,7 @@ class ArchiveResult(
         FAILED = 'failed', 'Failed'                     # final
         SKIPPED = 'skipped', 'Skipped'                  # final
         
-    state_machine_name = 'core.statemachines.ArchiveResultMachine'
+    state_machine_name = 'archivebox.core.statemachines.ArchiveResultMachine'
     retry_at_field_name = 'retry_at'
     state_field_name = 'status'
     active_state = StatusChoices.STARTED

@@ -153,7 +153,8 @@ class KVTag(ModelWithReadOnlyFields):
     objects: KVTagManager = KVTagManager.from_queryset(KVTagQuerySet)()
 
     class Meta:
-        abstract = True
+        abstract = False
+        app_label = 'tags'
         db_table = 'core_KVTags'
         unique_together = [('obj_id', 'name')]
     

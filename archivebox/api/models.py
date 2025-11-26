@@ -30,6 +30,7 @@ class APIToken(ABIDModel):
     abid_subtype_src = '"01"'
     abid_rand_src = 'self.id'
     abid_drift_allowed = True
+    abid_prefix = 'apt_'
 
     id = models.UUIDField(primary_key=True, default=None, null=False, editable=False, unique=True, verbose_name='ID')
     abid = ABIDField(prefix='apt_')

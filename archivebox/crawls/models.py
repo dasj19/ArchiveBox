@@ -49,9 +49,10 @@ class Seed(ModelWithOutputDir, ModelWithKVTags, ModelWithConfig, ModelWithNotes,
     ### Immutable fields
     id = models.UUIDField(primary_key=True, default=None, null=False, editable=False, unique=True, verbose_name='ID')
     abid = ABIDField(prefix=abid_prefix)
-    created_at = AutoDateTimeField(default=None, null=False, db_index=True)                  # unique source location where URLs will be loaded from
+    created_at = AutoDateTimeField(default=None, null=False, db_index=True)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, default=get_or_create_system_user_pk, null=False)
-    
+    uri = models.URLField(unique=False, db_index=True, help_text='The unique source location where URLs will be loaded from')
+
     ### Mutable fields:
     extractor = models.CharField(default='auto', max_length=32, help_text='The parser / extractor to use to load URLs from this source (default: auto)')
     tags_str = models.CharField(max_length=255, null=False, blank=True, default='', help_text='An optional comma-separated list of tags to attach to any URLs that come from this source')
@@ -112,14 +113,29 @@ class Seed(ModelWithOutputDir, ModelWithKVTags, ModelWithConfig, ModelWithNotes,
     def from_file(cls, source_file: Path, label: str='', parser: str='auto', tag: str='', created_by: int|None=None, config: dict|None=None):
         source_path = str(source_file.resolve()).replace(str(CONSTANTS.DATA_DIR), '/data')
         
-        seed, _ = cls.objects.get_or_create(
-            label=label or source_file.name,
-            uri=f'file://{source_path}',
-            created_by_id=getattr(created_by, 'pk', created_by) or get_or_create_system_user_pk(),
-            extractor=parser,
-            tags_str=tag,
-            config=config or {},
-        )
+        from django.db import IntegrityError
+
+        lookup = {
+            'label': label or source_file.name,
+            'uri': f'file://{source_path}',
+            'created_by_id': getattr(created_by, 'pk', created_by) or get_or_create_system_user_pk(),
+        }
+
+        defaults = {
+            'extractor': parser,
+            'tags_str': tag,
+            'config': config or {},
+        }
+
+        try:
+            seed, _ = cls.objects.get_or_create(**lookup, defaults=defaults)
+        except IntegrityError:
+            # If a uniqueness race occurred, try to fetch the existing record.
+            seed = cls.objects.filter(label=lookup['label'], created_by_id=lookup['created_by_id']).first()
+            if not seed:
+                # Re-raise if we couldn't recover
+                raise
+
         seed.save()
         return seed
 
@@ -313,7 +329,7 @@ class Crawl(ModelWithOutputDir, ModelWithKVTags, ModelWithConfig, ModelWithHealt
     )
     
     ### ModelWithStateMachine:
-    state_machine_name = 'crawls.statemachines.CrawlMachine'
+    state_machine_name = 'archivebox.crawls.statemachines.CrawlMachine'
     retry_at_field_name = 'retry_at'
     state_field_name = 'status'
     StatusChoices = ModelWithStateMachine.StatusChoices
@@ -348,9 +364,16 @@ class Crawl(ModelWithOutputDir, ModelWithKVTags, ModelWithConfig, ModelWithHealt
     snapshot_set: models.Manager['Snapshot']
     
     # @property
-    # def persona(self) -> Persona:
-    #     # TODO: replace with self.persona = models.ForeignKey(Persona, on_delete=models.SET_NULL, null=True, blank=True, editable=True)
-    #     return self.persona_id
+    @property
+    def persona(self) -> str:
+        """Return a persona identifier for this Crawl.
+
+        Historically this returned a Persona object; the codebase now
+        stores `persona_id` as a UUID. For compatibility we expose a
+        simple property that returns the stored `persona_id` or the
+        literal `'Default'` when none is set.
+        """
+        return getattr(self, 'persona_id', None) or 'Default'
     
 
     class Meta(TypedModelMeta):
@@ -367,14 +390,27 @@ class Crawl(ModelWithOutputDir, ModelWithKVTags, ModelWithConfig, ModelWithHealt
         
     @classmethod
     def from_seed(cls, seed: Seed, max_depth: int=0, persona: str='Default', tags_str: str='', config: dict|None=None, created_by: int|None=None):
-        crawl, _ = cls.objects.get_or_create(
-            seed=seed,
-            max_depth=max_depth,
-            tags_str=tags_str or seed.tags_str,
-            persona=persona or seed.config.get('DEFAULT_PERSONA') or 'Default',
-            config=seed.config or config or {},
-            created_by_id=getattr(created_by, 'pk', created_by) or seed.created_by_id,
-        )
+        # Only include persona in the get_or_create lookup if it's a
+        # non-default value. The `Crawl` model stores `persona_id` (UUID),
+        # so avoid filtering by a non-existent `persona` field which causes
+        # FieldError during query building.
+        lookup_kwargs = {
+            'seed': seed,
+            'max_depth': max_depth,
+            'tags_str': tags_str or seed.tags_str,
+            'config': seed.config or config or {},
+            'created_by_id': getattr(created_by, 'pk', created_by) or seed.created_by_id,
+        }
+
+        persona_value = persona or seed.config.get('DEFAULT_PERSONA') or None
+        if persona_value and persona_value != 'Default':
+            # If caller provided an explicit persona (not the literal 'Default'),
+            # try to include it as `persona_id` in the lookup. This is conservative
+            # — if the value is not a UUID, saving may still fail later, but it
+            # avoids constructing invalid query filters now.
+            lookup_kwargs['persona_id'] = persona_value
+
+        crawl, _ = cls.objects.get_or_create(**lookup_kwargs)
         crawl.save()
         return crawl
         

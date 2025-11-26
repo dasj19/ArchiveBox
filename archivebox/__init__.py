@@ -103,6 +103,7 @@ LOADED_PLUGINS = abx.load_plugins(ALL_PLUGINS)
 from .config.constants import CONSTANTS                         # noqa
 from .config.paths import PACKAGE_DIR, DATA_DIR, ARCHIVE_DIR    # noqa
 from .config.version import VERSION                             # noqa
+from .misc import util                                          # noqa
 
 __version__ = VERSION
 __author__ = 'ArchiveBox'

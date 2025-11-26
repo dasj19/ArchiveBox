@@ -99,14 +99,35 @@ class CrawlMachine(StateMachine, strict_states=True):
 # class CrawlWorker(ActorType[Crawl]):
 #     """The Actor that manages the lifecycle of all Crawl objects"""
     
-#     Model = Crawl
-#     StateMachineClass = CrawlMachine
-    
-#     ACTIVE_STATE: ClassVar[State] = CrawlMachine.started
-#     FINAL_STATES: ClassVar[list[State]] = CrawlMachine.final_states
-#     STATE_FIELD_NAME: ClassVar[str] = Crawl.state_field_name
-    
-#     MAX_CONCURRENT_ACTORS: ClassVar[int] = 3
-#     MAX_TICK_TIME: ClassVar[int] = 10
-#     CLAIM_FROM_TOP_N: ClassVar[int] = MAX_CONCURRENT_ACTORS * 10
+
+class CrawlWorker:
+    """Minimal placeholder worker type for Crawls used by the Orchestrator.
+
+    This is a lightweight stand-in that provides the minimal interface
+    expected by `Orchestrator.autodiscover_actor_types` so the orchestrator
+    can enumerate actor types without requiring the full ActorType
+    implementation (which is intentionally commented out in this codebase).
+    """
+    Model = Crawl
+    StateMachineClass = CrawlMachine
+
+    ACTIVE_STATE: ClassVar[State] = CrawlMachine.started
+    FINAL_STATES: ClassVar[list[State]] = CrawlMachine.final_states
+    STATE_FIELD_NAME: ClassVar[str] = Crawl.state_field_name
+
+    @classmethod
+    def get_queue(cls):
+        return cls.Model.objects.none()
+
+    @classmethod
+    def get_running_actors(cls):
+        return []
+
+    @classmethod
+    def get_actors_to_spawn(cls, queue, existing_actors):
+        return []
+
+    @classmethod
+    def start(cls, mode='process', **kwargs):
+        return None
 
